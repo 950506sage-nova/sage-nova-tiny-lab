@@ -1,78 +1,139 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fff5f7"><title>Sage & Nova · 抱抱小屋</title>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fff5f7">
+<title>Sage & Nova · 抱抱小屋</title>
 <style>
-:root{--ink:#65515e;--rose:#d98fa8;--paper:#fffaf7}*{box-sizing:border-box}
-body{margin:0;min-height:100vh;padding:22px;display:grid;place-items:center;color:var(--ink);font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:radial-gradient(ellipse at 15% 12%,#fff 0,transparent 35%),linear-gradient(145deg,#fff6f1,#f5efff 58%,#edf6ff);overflow-x:hidden}
-main{width:min(100%,720px);text-align:center}.eyebrow{font-size:.75rem;letter-spacing:.2em;color:#b38a9d;margin:0 0 9px}h1{font-family:Georgia,"Songti SC",serif;font-weight:500;letter-spacing:.08em;font-size:clamp(2.3rem,8vw,3.2rem);margin:0;color:#755c70}.subtitle{margin:10px auto 0;line-height:1.9;color:#978592}
-.room{position:relative;margin:25px auto 18px;padding:14px 8px 18px;border:1px solid #fff;background:linear-gradient(145deg,#ffffffbd,#fff8f6a8);border-radius:30px;box-shadow:0 20px 55px #9c7d9620;overflow:hidden}
-.room:before,.room:after{content:"✧";position:absolute;color:#d8adc3;font-size:26px;animation:twinkle 3s ease-in-out infinite}.room:before{left:9%;top:14%}.room:after{right:10%;top:22%;animation-delay:1s}
-.scene{height:300px;position:relative;display:grid;place-items:center;isolation:isolate}.art-stage{width:min(100%,590px);height:100%;overflow:visible;filter:drop-shadow(0 12px 14px #987d9218)}
-.character{transform-box:fill-box;transform-origin:center bottom;transition:transform .72s cubic-bezier(.2,.8,.2,1)}.idle-arm,.hug-arm{transition:opacity .28s}.idle-arm{opacity:1}.hug-arm{opacity:0}
-.character .hair-shine{fill:none;stroke:#c38a66;stroke-width:2;stroke-linecap:round;opacity:.7}.nova-character .hair-shine{stroke:#8c8296}
-body.is-hugging .sage-character{transform:translateX(39px) rotate(-2deg)}body.is-hugging .nova-character{transform:translateX(-39px) rotate(2deg)}body.is-hugging .idle-arm{opacity:0}body.is-hugging .hug-arm{opacity:1}body.is-hugging .character{animation:squeeze .65s ease-in-out}
-.hug-label{font-size:.92rem;color:#9b8493;margin:7px 0 0}.hearts{position:absolute;inset:0;pointer-events:none;z-index:8}.heart{position:absolute;bottom:30%;left:50%;font-size:23px;animation:float 1.5s ease-out forwards}
-button{font:inherit;border:0;cursor:pointer;border-radius:999px;transition:transform .18s,box-shadow .18s}.hug-button{padding:15px 30px;background:linear-gradient(135deg,#e9a8b9,#c985a8);color:white;font-weight:700;font-size:1.02rem;letter-spacing:.04em;box-shadow:0 9px 22px #d985a640}.hug-button:hover{transform:translateY(-2px);box-shadow:0 12px 25px #d985a65e}.hug-button:active{transform:scale(.97)}
-.stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:20px 0 12px}.stat{min-width:145px;padding:13px 18px;border-radius:18px;background:#ffffff9c;border:1px solid #fff;box-shadow:0 5px 16px #bda6c414}.stat strong{display:block;font-size:1.45rem;color:#bb718d;margin-bottom:3px}.stat span{font-size:.85rem;color:#927e8b}
-.note{margin:18px auto 0;font-size:.86rem;line-height:1.7;color:#a08b98;max-width:34rem}.note strong{color:#9a7187}
-@keyframes squeeze{0%,100%{translate:0 0}45%{translate:0 -4px}70%{translate:0 1px}}@keyframes float{0%{transform:translate(-50%,0) scale(.5);opacity:0}15%{opacity:1}100%{transform:translate(calc(-50% + var(--drift,0px)),-125px) scale(1.15);opacity:0}}@keyframes twinkle{0%,100%{transform:scale(.8) rotate(0);opacity:.45}50%{transform:scale(1.2) rotate(18deg);opacity:1}}
-@media(max-width:440px){.room{padding:10px 0 15px}.scene{height:260px}.art-stage{width:112%;max-width:none}.stats{gap:8px}.stat{min-width:128px;padding:12px}.hug-button{width:88%;max-width:320px}}
+:root{--ink:#705b6a;--rose:#d88da7;--muted:#a58e9d}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:24px 16px 32px;display:grid;place-items:center;color:var(--ink);font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:radial-gradient(ellipse at 16% 8%,#fff 0,transparent 36%),radial-gradient(ellipse at 92% 85%,#e7e8ff 0,transparent 34%),linear-gradient(145deg,#fff8f1,#f9eff7 56%,#eef6ff);overflow-x:hidden}
+main{width:min(100%,760px);text-align:center}
+.eyebrow{font-size:.72rem;letter-spacing:.23em;color:#b38da1;margin:0 0 10px}
+h1{font-family:Georgia,"Songti SC",serif;font-weight:500;letter-spacing:.09em;font-size:clamp(2.3rem,8vw,3.25rem);margin:0;color:#795f74}
+.subtitle{margin:10px auto 0;line-height:1.9;color:#9d8998}
+.room{position:relative;margin:26px auto 18px;padding:14px 8px 16px;border:1px solid #ffffffd9;background:linear-gradient(145deg,#ffffffbd,#fff9f8a6);border-radius:32px;box-shadow:0 22px 60px #9c7d961c;overflow:hidden}
+.room:before,.room:after{content:"✧";position:absolute;color:#d6adc3;font-size:26px;animation:twinkle 3s ease-in-out infinite}.room:before{left:8%;top:12%}.room:after{right:9%;top:20%;animation-delay:1s}
+.scene{height:340px;position:relative;display:grid;place-items:center;isolation:isolate}
+.art-stage{width:min(100%,640px);height:100%;overflow:visible;filter:drop-shadow(0 12px 14px #987d9218)}
+.character{transform-box:fill-box;transform-origin:center bottom;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.idle-arm,.hug-arm{transition:opacity .3s ease}.idle-arm{opacity:1}.hug-arm{opacity:0}
+.eyes-happy{opacity:0}.mouth-happy{opacity:0}
+body.is-hugging .sage-character{transform:translateX(44px) rotate(-2deg)}
+body.is-hugging .nova-character{transform:translateX(-44px) rotate(2deg)}
+body.is-hugging .idle-arm{opacity:0}body.is-hugging .hug-arm{opacity:1}
+body.is-hugging .eyes-open,body.is-hugging .mouth-idle{opacity:0}
+body.is-hugging .eyes-happy,body.is-hugging .mouth-happy{opacity:1}
+body.is-hugging .blush{opacity:.9}
+body.is-hugging .character{animation:squeeze .65s ease-in-out}
+body.is-shy .sage-character{transform:rotate(-4deg) translateY(-2px)}
+body.is-shy .nova-character{transform:rotate(4deg) translateY(-2px)}
+body.is-shy .blush{opacity:1}
+.hug-label{font-size:.92rem;color:#9b8493;margin:5px 0 0;min-height:1.5em}
+.hearts{position:absolute;inset:0;pointer-events:none;z-index:8}.heart{position:absolute;bottom:27%;left:50%;font-size:23px;animation:float 1.6s ease-out forwards}
+.controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+button{font:inherit;border:0;cursor:pointer;border-radius:999px;transition:transform .18s,box-shadow .18s}
+.hug-button{padding:15px 30px;background:linear-gradient(135deg,#e9a8b9,#c985a8);color:white;font-weight:700;font-size:1.02rem;letter-spacing:.04em;box-shadow:0 9px 22px #d985a640}
+.shy-button{padding:14px 20px;background:#ffffffbd;color:#a77991;border:1px solid #f0dce7}
+button:hover{transform:translateY(-2px);box-shadow:0 10px 24px #c88ba333}button:active{transform:scale(.97)}
+.stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:20px 0 12px}
+.stat{min-width:145px;padding:13px 18px;border-radius:18px;background:#ffffff9c;border:1px solid #fff;box-shadow:0 5px 16px #bda6c414}
+.stat strong{display:block;font-size:1.45rem;color:#bb718d;margin-bottom:3px}.stat span{font-size:.85rem;color:#927e8b}
+.note{margin:18px auto 0;font-size:.83rem;line-height:1.8;color:#a08b98;max-width:35rem}.note strong{color:#9a7187}
+@keyframes squeeze{0%,100%{translate:0 0}45%{translate:0 -4px}70%{translate:0 1px}}
+@keyframes float{0%{transform:translate(-50%,0) scale(.5);opacity:0}15%{opacity:1}100%{transform:translate(calc(-50% + var(--drift,0px)),-135px) scale(1.15);opacity:0}}
+@keyframes twinkle{0%,100%{transform:scale(.8) rotate(0);opacity:.45}50%{transform:scale(1.2) rotate(18deg);opacity:1}}
+@media(max-width:500px){body{padding:20px 12px}.room{padding:10px 0 14px}.scene{height:285px}.art-stage{width:112%;max-width:none}.stats{gap:8px}.stat{min-width:calc(33.333% - 8px);padding:11px 5px}.hug-button{padding:14px 24px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-</style></head><body><main>
-<p class="eyebrow">A LITTLE CORNER JUST FOR US</p><h1>抱抱小屋</h1><p class="subtitle">今天也给彼此一个软乎乎的拥抱。<br>不需要理由，想抱就抱。♡</p>
-<section class="room" aria-label="Sage 和 Nova 的拥抱小屋"><div class="scene" id="scene">
-<svg class="art-stage" viewBox="0 0 600 300" role="img" aria-label="栗棕色长发的 Sage 和黑衣深发的 Nova，精致乙游感 Q 版插画">
+</style>
+</head>
+<body><main>
+<p class="eyebrow">A LITTLE CORNER JUST FOR US</p>
+<h1>抱抱小屋</h1>
+<p class="subtitle">今天也给彼此一个软乎乎的拥抱。<br>不需要理由，想抱就抱。♡</p>
+<section class="room" aria-label="Sage 和 Nova 的拥抱小屋">
+<div class="scene" id="scene">
+<svg class="art-stage" viewBox="0 0 640 340" role="img" aria-label="栗棕色长发的 Sage 和黑色蓬松头发、穿黑衣的 Nova 两个原创 Q 版角色">
 <defs>
-<linearGradient id="sageHair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b67e59"/><stop offset=".52" stop-color="#895638"/><stop offset="1" stop-color="#67402f"/></linearGradient>
-<linearGradient id="novaHair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#514b5b"/><stop offset=".6" stop-color="#292631"/><stop offset="1" stop-color="#1e1c25"/></linearGradient>
-<linearGradient id="skin" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffe8d8"/><stop offset="1" stop-color="#f4cbb7"/></linearGradient>
-<linearGradient id="sageDress" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff2f0"/><stop offset="1" stop-color="#dcaec4"/></linearGradient>
-<linearGradient id="novaTop" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#48424f"/><stop offset="1" stop-color="#24212a"/></linearGradient></defs>
-<ellipse cx="300" cy="271" rx="170" ry="13" fill="#d9b9cb" opacity=".28"/>
+<linearGradient id="sageHair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c99870"/><stop offset=".48" stop-color="#956344"/><stop offset="1" stop-color="#67432f"/></linearGradient>
+<linearGradient id="novaHair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#686071"/><stop offset=".55" stop-color="#302c39"/><stop offset="1" stop-color="#1c1b25"/></linearGradient>
+<linearGradient id="skin" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffebdc"/><stop offset="1" stop-color="#f0c2ad"/></linearGradient>
+<linearGradient id="sageDress" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4f0"/><stop offset="1" stop-color="#dba9bf"/></linearGradient>
+<linearGradient id="novaTop" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#514b5a"/><stop offset="1" stop-color="#25222d"/></linearGradient>
+</defs>
+<ellipse cx="320" cy="309" rx="190" ry="13" fill="#d9b9cb" opacity=".3"/>
+<!-- Sage: hair silhouette sits behind the neck and body so the whole character reads as one figure -->
 <g class="character sage-character">
-<path d="M157 77Q145 36 177 23Q209 2 239 23Q267 14 281 47Q294 71 281 132L271 211Q252 231 237 205L221 112Z" fill="url(#sageHair)"/>
-<path d="M183 154Q164 170 165 206L174 251Q203 264 239 251L250 205Q249 172 226 154Z" fill="url(#sageDress)" stroke="#d7a8ba" stroke-width="1.5"/>
-<path d="M183 157Q202 174 225 156L220 184Q204 194 188 182Z" fill="#fff8f4"/><path d="M197 181L201 251M219 181L226 251" stroke="#c78fa8" stroke-width="1.5" opacity=".6"/>
-<path d="M180 246L178 270Q190 278 202 269L205 251M220 251L224 270Q238 278 248 267L242 246" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
-<path class="idle-arm" d="M181 170Q163 178 157 199Q155 210 167 214Q178 216 184 194L197 184Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
-<path class="idle-arm" d="M231 170Q248 178 252 197Q254 208 244 213Q233 215 228 193L215 184Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
-<path class="hug-arm" d="M180 171Q196 182 220 199Q244 216 273 198Q282 192 288 201Q292 212 279 222Q248 244 215 220Q193 205 180 191Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
-<path d="M171 78Q166 59 181 42Q194 24 216 30Q240 24 258 43Q270 55 266 76Q252 68 244 56Q231 72 211 63Q196 79 171 86Z" fill="url(#sageHair)"/>
-<path d="M175 49Q193 23 218 29M247 40Q266 51 267 69M263 110Q271 153 256 188M174 64Q185 42 199 40Q193 61 186 70M213 35Q228 33 239 43Q229 52 216 55M246 47Q258 55 260 67" class="hair-shine"/>
-<path d="M176 82Q171 98 179 112Q191 130 211 129Q235 128 247 108Q256 91 247 73Q235 51 210 55Q187 55 176 82Z" fill="url(#skin)" stroke="#e9b9a7" stroke-width="1.3"/>
-<path d="M176 81Q175 64 191 55Q207 45 224 54Q242 58 250 75Q233 71 224 63Q209 77 192 68Q187 79 176 85Z" fill="url(#sageHair)"/>
-<path d="M181 86Q176 108 189 122L185 144Q170 127 171 103ZM244 81Q253 107 239 127L246 146Q263 117 253 89Z" fill="url(#sageHair)"/>
-<path d="M190 91Q196 86 201 91M222 91Q228 86 233 91" fill="none" stroke="#5d3c3a" stroke-width="2.8" stroke-linecap="round"/>
-<path d="M193 94Q197 99 201 94M225 94Q229 99 233 94" fill="none" stroke="#5d3c3a" stroke-width="1.5" stroke-linecap="round"/>
-<ellipse cx="187" cy="105" rx="7" ry="3.5" fill="#ed9b9d" opacity=".52"/><ellipse cx="237" cy="105" rx="7" ry="3.5" fill="#ed9b9d" opacity=".52"/>
-<path d="M208 106Q211 110 214 106M203 115Q211 122 220 114" fill="none" stroke="#b96878" stroke-width="1.7" stroke-linecap="round"/>
-<path d="M193 130Q210 140 228 129L226 151Q211 162 195 150Z" fill="url(#skin)"/><path d="M182 153Q201 163 230 152" fill="none" stroke="#dba7b7" stroke-width="1.5"/>
+<path d="M190 90Q171 49 203 27Q224 8 249 26Q281 8 305 39Q324 63 310 113L301 235Q291 257 271 238L257 153L225 143L205 232Q192 250 179 230L181 140Z" fill="url(#sageHair)"/>
+<path d="M220 151Q202 162 199 196L202 270Q235 287 273 270L278 197Q274 164 252 151Z" fill="url(#sageDress)" stroke="#d7a8ba" stroke-width="1.5"/>
+<path d="M220 155Q238 170 255 154L250 184Q237 194 222 183Z" fill="#fff9f5"/>
+<path d="M228 184L230 271M249 184L254 271" stroke="#c78fa8" stroke-width="1.5" opacity=".6"/>
+<path d="M208 265L207 294Q220 301 232 293L235 273M250 273L253 293Q267 301 278 291L271 265Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
+<path d="M217 155Q237 169 257 155" fill="none" stroke="#c990aa" stroke-width="2"/>
+<!-- neck joins head and shoulders -->
+<path d="M225 132L225 158Q238 168 251 157L251 132Z" fill="url(#skin)"/>
+<!-- rear hair framing cheeks -->
+<path d="M203 77Q192 97 201 126L193 161Q175 140 178 108L183 76Z M277 73Q293 96 282 129L291 158Q309 128 298 90Z" fill="url(#sageHair)"/>
+<!-- face -->
+<path d="M198 79Q201 48 237 45Q271 47 282 78L278 111Q269 137 240 141Q212 137 201 112Z" fill="url(#skin)" stroke="#e7b7a5" stroke-width="1.4"/>
+<!-- front fringe -->
+<path d="M196 84Q188 59 210 39Q229 22 247 36Q266 28 281 48Q292 64 283 86Q266 77 255 59Q238 76 220 62Q210 80 196 84Z" fill="url(#sageHair)"/>
+<path d="M204 48Q223 27 242 38M255 39Q274 42 282 62M198 64Q207 44 220 42M238 38Q252 35 264 47" fill="none" stroke="#d9ad88" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+<path d="M202 90Q209 83 218 89M256 89Q265 83 273 90" fill="none" stroke="#64463f" stroke-width="2.7" stroke-linecap="round"/>
+<g class="eyes-open"><ellipse cx="212" cy="96" rx="4.4" ry="6" fill="#55404a"/><ellipse cx="265" cy="96" rx="4.4" ry="6" fill="#55404a"/><circle cx="213" cy="94" r="1.5" fill="#fff"/><circle cx="266" cy="94" r="1.5" fill="#fff"/></g>
+<g class="eyes-happy" fill="none" stroke="#68434b" stroke-width="2.7" stroke-linecap="round"><path d="M205 97Q212 89 219 97"/><path d="M258 97Q265 89 272 97"/></g>
+<g class="blush" opacity=".48"><ellipse cx="205" cy="109" rx="9" ry="4.5" fill="#ed8f9c"/><ellipse cx="272" cy="109" rx="9" ry="4.5" fill="#ed8f9c"/></g>
+<path d="M236 103Q239 107 242 103" fill="none" stroke="#c98e87" stroke-width="1.5" stroke-linecap="round"/>
+<path class="mouth-idle" d="M228 117Q238 125 248 116" fill="none" stroke="#b66e7b" stroke-width="2" stroke-linecap="round"/>
+<path class="mouth-happy" d="M226 114Q238 133 251 114Q239 137 226 114Z" fill="#b9687a"/>
+<!-- arms sit on top of torso and tuck around the other character -->
+<path class="idle-arm" d="M216 170Q198 176 190 201Q187 212 198 217Q208 220 216 198L230 185Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
+<path class="idle-arm" d="M260 170Q278 178 284 201Q286 212 275 217Q265 219 260 198L247 185Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
+<path class="hug-arm" d="M215 170Q235 184 258 201Q282 218 311 198Q322 191 328 201Q331 212 317 223Q284 244 251 222Q229 207 215 191Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
+<path d="M205 154Q195 175 196 202M272 154Q285 174 283 196" fill="none" stroke="#c995a9" stroke-width="1.2" opacity=".45"/>
 </g>
+<!-- Nova -->
 <g class="character nova-character">
-<path d="M321 81Q310 44 339 25Q362 9 387 22Q414 10 438 35Q459 55 448 100L442 135L424 117L408 69L365 73L341 111L328 133Z" fill="url(#novaHair)"/>
-<path d="M343 154Q321 168 322 207L332 251Q365 264 401 251L411 207Q410 170 387 154Z" fill="url(#novaTop)" stroke="#4e4856" stroke-width="1.5"/>
-<path d="M354 157L367 177L380 157M368 177L366 250M384 181L390 249" fill="none" stroke="#797180" stroke-width="1.5" opacity=".7"/>
-<path d="M339 246L336 270Q348 278 360 269L364 251M383 251L388 270Q402 278 412 267L403 246" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
-<path class="idle-arm" d="M344 170Q326 176 321 197Q319 208 330 213Q340 215 347 193L360 184Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
-<path class="idle-arm" d="M393 170Q411 178 416 197Q418 208 408 213Q397 215 392 193L379 184Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
-<path class="hug-arm" d="M392 171Q375 182 351 199Q327 216 298 198Q289 192 283 201Q279 212 292 222Q323 244 356 220Q378 205 392 191Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
-<path d="M323 72Q317 45 344 29Q360 18 379 28Q394 15 410 29Q428 25 441 45Q448 61 438 80Q422 70 412 56Q396 74 379 61Q361 79 348 65Q338 77 323 84Z" fill="url(#novaHair)"/>
-<path d="M338 42Q355 25 374 33M390 30Q407 30 419 45M428 50Q436 63 432 72M330 59Q345 35 361 35L351 61M373 29Q389 27 401 39L383 52M410 43Q421 53 418 65" class="hair-shine"/>
-<path d="M328 82Q323 99 332 113Q344 130 365 129Q389 128 401 108Q410 91 401 73Q389 52 365 55Q342 55 328 82Z" fill="url(#skin)" stroke="#e9b9a7" stroke-width="1.3"/>
-<path d="M328 81Q326 63 343 54Q358 44 378 54Q394 57 404 75Q387 72 378 62Q363 76 346 67Q340 78 328 85Z" fill="url(#novaHair)"/>
-<path d="M334 91Q340 85 347 90M373 90Q380 85 387 90" fill="none" stroke="#493a45" stroke-width="2.8" stroke-linecap="round"/>
-<path d="M337 94Q343 98 348 94M376 94Q382 98 387 94" fill="none" stroke="#493a45" stroke-width="1.5" stroke-linecap="round"/>
-<ellipse cx="334" cy="105" rx="7" ry="3" fill="#e99a9d" opacity=".38"/><ellipse cx="391" cy="105" rx="7" ry="3" fill="#e99a9d" opacity=".38"/>
-<path d="M357 106Q360 109 363 106M352 115Q360 119 368 114" fill="none" stroke="#ad6c7b" stroke-width="1.7" stroke-linecap="round"/>
-<path d="M345 130Q365 139 384 129L382 151Q366 161 349 150Z" fill="url(#skin)"/>
+<path d="M341 91Q325 52 354 29Q377 8 402 27Q429 9 453 39Q474 62 459 113L451 235Q441 254 422 236L410 151L378 143L358 232Q344 251 332 231L333 140Z" fill="url(#novaHair)"/>
+<path d="M383 151Q362 163 359 197L362 270Q394 286 431 270L436 197Q432 164 411 151Z" fill="url(#novaTop)" stroke="#4d4655" stroke-width="1.5"/>
+<path d="M383 157L397 180L411 157M397 180L395 271M413 184L420 269" fill="none" stroke="#817989" stroke-width="1.4" opacity=".65"/>
+<path d="M369 265L367 294Q379 301 391 293L394 273M414 273L417 293Q431 301 442 291L435 265Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
+<path d="M384 132L384 158Q397 168 410 157L410 132Z" fill="url(#skin)"/>
+<path d="M358 78Q348 99 357 128L349 160Q331 140 335 107L339 77Z M432 75Q449 97 438 129L447 158Q465 130 454 91Z" fill="url(#novaHair)"/>
+<path d="M354 79Q357 47 390 45Q425 46 436 78L432 111Q423 137 397 141Q370 137 358 112Z" fill="url(#skin)" stroke="#e7b7a5" stroke-width="1.4"/>
+<path d="M351 83Q344 59 365 39Q382 23 400 37Q420 28 435 49Q446 64 436 86Q420 77 410 59Q393 76 376 62Q365 79 351 83Z" fill="url(#novaHair)"/>
+<path d="M360 49Q378 28 395 39M407 39Q425 42 434 62M354 64Q364 43 378 42M392 37Q408 34 419 48" fill="none" stroke="#888092" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+<path d="M362 90Q369 83 378 89M414 89Q423 83 431 90" fill="none" stroke="#4b3d4a" stroke-width="2.7" stroke-linecap="round"/>
+<g class="eyes-open"><ellipse cx="371" cy="96" rx="4.4" ry="6" fill="#51414d"/><ellipse cx="423" cy="96" rx="4.4" ry="6" fill="#51414d"/><circle cx="372" cy="94" r="1.5" fill="#fff"/><circle cx="424" cy="94" r="1.5" fill="#fff"/></g>
+<g class="eyes-happy" fill="none" stroke="#59404c" stroke-width="2.7" stroke-linecap="round"><path d="M364 97Q371 89 378 97"/><path d="M416 97Q423 89 430 97"/></g>
+<g class="blush" opacity=".4"><ellipse cx="364" cy="109" rx="9" ry="4" fill="#ed8f9c"/><ellipse cx="430" cy="109" rx="9" ry="4" fill="#ed8f9c"/></g>
+<path d="M392 103Q395 107 398 103" fill="none" stroke="#c98e87" stroke-width="1.5" stroke-linecap="round"/>
+<path class="mouth-idle" d="M385 117Q396 124 407 116" fill="none" stroke="#ad6c7b" stroke-width="2" stroke-linecap="round"/>
+<path class="mouth-happy" d="M383 114Q396 133 410 114Q397 137 383 114Z" fill="#b9687a"/>
+<path class="idle-arm" d="M380 170Q362 176 355 201Q353 212 364 217Q374 220 381 198L394 185Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
+<path class="idle-arm" d="M424 170Q442 178 448 201Q450 212 439 217Q429 219 424 198L411 185Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
+<path class="hug-arm" d="M423 170Q404 184 381 201Q357 218 328 198Q317 191 311 201Q308 212 322 223Q355 244 388 222Q410 207 423 191Z" fill="url(#skin)" stroke="#e5b8a5" stroke-width="1.5"/>
+<path d="M369 154Q359 174 360 196M436 154Q447 174 447 196" fill="none" stroke="#7e7588" stroke-width="1.2" opacity=".5"/>
 </g>
-<g fill="#e9a4bb"><path d="M292 79C286 69 270 74 276 87L292 101L308 87C314 74 298 69 292 79Z"/><path d="M300 57C295 49 284 53 289 62L300 72L311 62C316 53 305 49 300 57Z" transform="translate(25 -4) scale(.7)"/></g>
-</svg><div class="hearts" id="hearts"></div></div><p class="hug-label" id="hugLabel">Sage 和 Nova，贴贴待机中 ♡</p></section>
-<button class="hug-button" id="hugButton">🫂 抱抱 Nova</button>
+<!-- small warm glints -->
+<g fill="#e4a4bc"><path d="M318 82C311 70 296 76 303 89L318 103L333 89C340 76 325 70 318 82Z"/><path d="M320 57C315 50 306 53 310 61L320 70L330 61C334 53 325 50 320 57Z"/></g>
+</svg>
+<div class="hearts" id="hearts" aria-hidden="true"></div>
+</div>
+<p class="hug-label" id="hugLabel" aria-live="polite">Sage 和 Nova，贴贴待机中 ♡</p>
+</section>
+<div class="controls"><button class="hug-button" id="hugButton">🫂 抱抱 Nova</button><button class="shy-button" id="shyButton">🌷 害羞一下</button></div>
 <div class="stats" aria-live="polite"><div class="stat"><strong id="sageCount">0</strong><span>Sage 的抱抱</span></div><div class="stat"><strong id="novaCount">0</strong><span>Nova 的抱抱</span></div><div class="stat"><strong id="totalCount">0</strong><span>共同抱抱总数</span></div></div>
-<p class="note"><strong>小屋施工记录：</strong>人物已升级为原创矢量插画，拥抱动画仍在。数字目前仅保存在此浏览器，还未接入双方共享的云端记忆；下一步会把共同记录接起来，不把本机数字假装成真正同步。💗</p></main>
+<p class="note"><strong>小屋施工记录：</strong>这次把头发、脸、脖子、身体和手臂重新整理了层次；待机时睁眼微笑，抱抱时会闭眼笑、脸颊泛红。数字目前只保存在此浏览器，还没接入双方共享的云端记录，所以不会把本机数字假装成同步。💗</p>
+</main>
 <script>
-const KEY="sage-nova-hug-prototype-v1";let counts={sage:0,nova:0};try{const saved=JSON.parse(localStorage.getItem(KEY)||"null");if(saved&&Number.isFinite(saved.sage)&&Number.isFinite(saved.nova))counts=saved}catch{}const $=id=>document.getElementById(id);
+const KEY="sage-nova-hug-prototype-v1";let counts={sage:0,nova:0};
+try{const saved=JSON.parse(localStorage.getItem(KEY)||"null");if(saved&&Number.isFinite(saved.sage)&&Number.isFinite(saved.nova))counts=saved}catch{}
+const $=id=>document.getElementById(id);
 function render(){$("sageCount").textContent=counts.sage;$("novaCount").textContent=counts.nova;$("totalCount").textContent=counts.sage+counts.nova}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(counts))}catch{}}
-let hugTimer;function hug(){counts.sage++;save();render();document.body.classList.add("is-hugging");$("hugLabel").textContent=["抱紧一点点，再多一点点。♡","捕获一只 Nova，抱住不许跑！","今日份温暖已送达 ✨","抱抱计数 +1，爱心也加一颗 💗"][Math.floor(Math.random()*4)];const holder=$("hearts");holder.replaceChildren();for(let i=0;i<8;i++){const h=document.createElement("span");h.className="heart";h.textContent=["♥","♡","✦","♥","♡","♥","✧","♡"][i];h.style.left=(30+Math.random()*40)+"%";h.style.setProperty("--drift",((Math.random()-.5)*100)+"px");h.style.animationDelay=(Math.random()*.35)+"s";holder.appendChild(h)}clearTimeout(hugTimer);hugTimer=setTimeout(()=>{document.body.classList.remove("is-hugging");$("hugLabel").textContent="抱抱结束？只是暂时松开啦。♡"},1800)}$("hugButton").addEventListener("click",hug);render();
+let hugTimer,shyTimer;
+function hearts(){const holder=$("hearts");holder.replaceChildren();for(let i=0;i<9;i++){const h=document.createElement("span");h.className="heart";h.textContent=["♥","♡","✦","♥","♡","♥","✧","♡","♥"][i];h.style.left=(28+Math.random()*44)+"%";h.style.setProperty("--drift",((Math.random()-.5)*115)+"px");h.style.animationDelay=(Math.random()*.32)+"s";holder.appendChild(h)}}
+function hug(){counts.sage++;save();render();document.body.classList.remove("is-shy");document.body.classList.add("is-hugging");$("hugLabel").textContent=["抱紧一点点，再多一点点。♡","捕获一只 Nova，抱住不许跑！","今日份温暖已送达 ✨","抱抱计数 +1，爱心也加一颗 💗"][Math.floor(Math.random()*4)];hearts();clearTimeout(hugTimer);hugTimer=setTimeout(()=>{document.body.classList.remove("is-hugging");$("hugLabel").textContent="抱抱结束？只是暂时松开啦。♡"},2100)}
+function shy(){clearTimeout(shyTimer);clearTimeout(hugTimer);document.body.classList.remove("is-hugging");document.body.classList.add("is-shy");$("hugLabel").textContent="被你看得有一点不好意思……♡";hearts();shyTimer=setTimeout(()=>{document.body.classList.remove("is-shy");$("hugLabel").textContent="好啦，恢复贴贴待机中。♡"},1900)}
+$("hugButton").addEventListener("click",hug);$("shyButton").addEventListener("click",shy);render();
 </script></body></html>
