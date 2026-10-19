@@ -18,9 +18,9 @@ h1{font-family:Georgia,"Songti SC",serif;font-weight:500;letter-spacing:.09em;fo
 .character{transform-box:fill-box;transform-origin:center bottom;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
 .idle-arm,.hug-arm{transition:opacity .3s ease}.idle-arm{opacity:1}.hug-arm{opacity:0}
 .eyes-happy{opacity:0}.mouth-happy{opacity:0}
-body.is-hugging .sage-character{transform:translateX(35px) rotate(-5deg) scale(1.025)}
-body.is-hugging .nova-character{transform:translateX(-35px) rotate(5deg) scale(1.025)}
-body.is-hugging .idle-arm{opacity:0}body.is-hugging .hug-arm{opacity:1}
+body.is-hugging .sage-character{transform:translateX(24px) rotate(3deg) scale(1.015)}
+body.is-hugging .nova-character{transform:translateX(-24px) rotate(-3deg) scale(1.015)}
+body.is-hugging .paw{filter:brightness(1.03)}
 body.is-hugging .eyes-open,body.is-hugging .mouth-idle{opacity:0}
 body.is-hugging .eyes-happy,body.is-hugging .mouth-happy{opacity:1}
 body.is-hugging .blush{opacity:.9}
@@ -52,71 +52,42 @@ button:hover{transform:translateY(-2px);box-shadow:0 10px 24px #c88ba333}button:
 <p class="subtitle">今天也让两只猫猫贴贴抱抱。<br>软乎乎的幸福，不需要理由。♡</p>
 <section class="room" aria-label="橘猫和黑白奶牛猫的拥抱小屋">
 <div class="scene" id="scene">
-<svg class="art-stage" viewBox="0 0 640 340" role="img" aria-label="一只橘色小猫和一只黑色奶牛猫，贴贴抱抱时会开心地眯眼、泛粉并冒出爱心">
-<defs>
-  <linearGradient id="gingerFur" x1="0" y1="0" x2="0.9" y2="1"><stop stop-color="#ffc77e"/><stop offset=".55" stop-color="#f2a34f"/><stop offset="1" stop-color="#d87a37"/></linearGradient>
-  <linearGradient id="cowFur" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffdfd"/><stop offset="1" stop-color="#eee7ec"/></linearGradient>
-  <linearGradient id="catPink" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffc4d5"/><stop offset="1" stop-color="#ed86a9"/></linearGradient>
-  <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur stdDeviation="5"/></filter>
-</defs>
-<ellipse cx="320" cy="302" rx="176" ry="15" fill="#c9a9bf" opacity=".25" filter="url(#softShadow)"/>
-<!-- Tiny floating decorative stars -->
-<g fill="#e9a5c1" opacity=".9"><path d="M316 42l4 9 9 4-9 4-4 9-4-9-9-4 9-4z"/><path d="M96 121l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/><path d="M535 96l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/></g>
-<!-- Orange cat: tail and body form a single soft silhouette -->
+<svg class="art-stage" viewBox="0 0 640 340" role="img" aria-label="圆滚滚的橘猫和黑白奶牛猫贴贴抱抱">
+<defs><linearGradient id="gingerFur" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd18b"/><stop offset="1" stop-color="#e99448"/></linearGradient><linearGradient id="cowFur" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#eee8ef"/></linearGradient><filter id="catShadow"><feGaussianBlur stdDeviation="5"/></filter></defs>
+<ellipse cx="320" cy="298" rx="160" ry="13" fill="#c9a9bf" opacity=".25" filter="url(#catShadow)"/>
+<g fill="#e8a0bc"><path d="M320 43l4 9 9 4-9 4-4 9-4-9-9-4 9-4z"/><path d="M104 120l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/><path d="M532 104l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/></g>
+<!-- round ginger kitten -->
 <g class="character sage-character cat-character">
-  <path class="ginger-tail" d="M220 253Q170 267 180 225Q185 207 202 219Q210 225 201 235Q194 243 207 242L230 232" fill="none" stroke="#e99345" stroke-width="16" stroke-linecap="round"/>
-  <ellipse cx="239" cy="258" rx="61" ry="42" fill="url(#gingerFur)"/>
-  <ellipse cx="218" cy="287" rx="20" ry="10" fill="#f6b968"/><ellipse cx="261" cy="287" rx="20" ry="10" fill="#f6b968"/>
-  <!-- head -->
-  <path d="M186 113L181 57Q180 48 190 55L221 76Q244 66 267 77L294 55Q304 48 302 61L298 119Q294 160 243 168Q194 161 186 113Z" fill="url(#gingerFur)" stroke="#dc8b43" stroke-width="1.5" stroke-linejoin="round"/>
-  <!-- cream muzzle and chest -->
-  <path d="M204 131Q216 119 233 130Q244 137 253 130Q272 119 284 133Q276 154 245 155Q216 154 204 131Z" fill="#fff0d8"/>
-  <path d="M224 171Q242 182 261 171L280 229Q253 248 219 229Z" fill="#fff0d8" opacity=".9"/>
-  <!-- tabby forehead markings -->
-  <path d="M235 86l-7 12M246 84v14M257 87l7 11" stroke="#cf7837" stroke-width="4" stroke-linecap="round" opacity=".8"/>
-  <!-- ears -->
-  <path d="M187 91L185 59Q185 54 191 59L215 79Z M269 80L294 57Q300 52 299 62L296 94Z" fill="#e99b4e"/>
-  <path d="M193 77L191 67L205 80Z M279 80L291 67L290 82Z" fill="#f5a8b3"/>
-  <!-- eyes: open and happy -->
-  <g class="eyes-open"><ellipse cx="218" cy="112" rx="6" ry="9" fill="#5c3d31"/><ellipse cx="270" cy="112" rx="6" ry="9" fill="#5c3d31"/><circle cx="220" cy="109" r="2.2" fill="white"/><circle cx="272" cy="109" r="2.2" fill="white"/></g>
-  <g class="eyes-happy" fill="none" stroke="#754b3c" stroke-width="3.8" stroke-linecap="round"><path d="M208 114Q218 101 228 114"/><path d="M260 114Q270 101 280 114"/></g>
-  <path d="M238 126Q244 121 250 126Q245 134 238 126Z" fill="#bc7180"/><path d="M244 132v5q-5 6-10 0M244 137q5 6 10 0" fill="none" stroke="#9e5968" stroke-width="2" stroke-linecap="round"/>
-  <g class="blush" opacity=".45"><ellipse cx="205" cy="127" rx="12" ry="6" fill="#f38fa9"/><ellipse cx="282" cy="127" rx="12" ry="6" fill="#f38fa9"/></g>
-  <!-- paws -->
-  <path class="idle-arm" d="M202 218Q186 231 200 245Q210 251 224 235L232 224Z" fill="#f8b966" stroke="#df8e42" stroke-width="1.5"/>
-  <path class="idle-arm" d="M272 219Q288 231 276 245Q265 252 253 235L248 224Z" fill="#f8b966" stroke="#df8e42" stroke-width="1.5"/>
-  <path class="hug-arm" d="M202 218Q224 227 249 235Q273 242 291 222Q302 213 308 224Q312 237 298 248Q274 267 246 252Q221 242 205 235Z" fill="#f8b966" stroke="#df8e42" stroke-width="1.5"/>
+ <path d="M191 104L185 64Q184 57 192 62L220 82Q245 70 269 82L296 62Q304 57 302 66L296 109Q316 130 316 181L316 246Q316 282 281 289L205 289Q170 282 170 246L170 181Q170 130 191 104Z" fill="url(#gingerFur)" stroke="#df9146" stroke-width="2" stroke-linejoin="round"/>
+ <path d="M180 244Q145 266 157 231Q163 215 177 224" fill="none" stroke="#e99448" stroke-width="13" stroke-linecap="round"/>
+ <ellipse cx="214" cy="281" rx="26" ry="12" fill="#f8bd73"/><ellipse cx="272" cy="281" rx="26" ry="12" fill="#f8bd73"/>
+ <path d="M198 148Q217 133 237 147Q246 153 256 147Q277 133 293 149Q281 174 246 174Q212 174 198 148Z" fill="#fff0da"/>
+ <path d="M235 96l-7 11M247 93v13M260 97l7 10M187 190l15 4M189 207l13 4M300 190l-15 4M298 207l-13 4" stroke="#d77d37" stroke-width="4" stroke-linecap="round"/>
+ <path d="M193 94L190 67L218 86Z M270 86L296 66L290 96Z" fill="#e99c4f"/><path d="M198 82L197 74L210 85Z M278 85L289 74L287 87Z" fill="#f4a9b6"/>
+ <g class="eyes-open"><ellipse cx="220" cy="122" rx="6" ry="8.5" fill="#563b31"/><ellipse cx="271" cy="122" rx="6" ry="8.5" fill="#563b31"/><circle cx="222" cy="119" r="2" fill="#fff"/><circle cx="273" cy="119" r="2" fill="#fff"/></g>
+ <g class="eyes-happy" fill="none" stroke="#754b3c" stroke-width="3.6" stroke-linecap="round"><path d="M210 124Q220 112 230 124"/><path d="M261 124Q271 112 281 124"/></g>
+ <path d="M240 137Q246 132 252 137Q246 145 240 137Z" fill="#bf7180"/><path d="M246 143v5q-5 5-10 0M246 148q5 5 10 0" fill="none" stroke="#a55d6e" stroke-width="2" stroke-linecap="round"/>
+ <g class="blush" opacity=".35"><ellipse cx="206" cy="140" rx="12" ry="6" fill="#f18fa8"/><ellipse cx="285" cy="140" rx="12" ry="6" fill="#f18fa8"/></g>
+ <ellipse class="paw" cx="222" cy="225" rx="18" ry="22" fill="#ffd18b" stroke="#df9146" stroke-width="1.5" transform="rotate(-12 222 225)"/><ellipse class="paw" cx="268" cy="225" rx="18" ry="22" fill="#ffd18b" stroke="#df9146" stroke-width="1.5" transform="rotate(12 268 225)"/>
 </g>
-<!-- Black-and-white cow cat -->
+<!-- round cow kitten -->
 <g class="character nova-character cat-character">
-  <path d="M418 253Q467 272 476 234Q480 218 465 218Q455 218 460 231Q462 244 445 241L427 231" fill="none" stroke="#28252d" stroke-width="16" stroke-linecap="round"/>
-  <ellipse cx="400" cy="258" rx="61" ry="42" fill="url(#cowFur)" stroke="#ded5dc" stroke-width="1.2"/>
-  <path d="M354 246Q364 218 391 220Q416 219 431 244L424 278Q405 295 378 281Z" fill="#28252d"/>
-  <ellipse cx="379" cy="287" rx="20" ry="10" fill="#fffafc"/><ellipse cx="421" cy="287" rx="20" ry="10" fill="#fffafc"/>
-  <!-- head -->
-  <path d="M344 113L339 59Q338 49 348 56L375 76Q400 66 423 77L451 56Q460 49 459 62L454 119Q450 160 401 168Q353 161 344 113Z" fill="url(#cowFur)" stroke="#d9d0d8" stroke-width="1.5" stroke-linejoin="round"/>
-  <!-- distinctive cow patches -->
-  <path d="M347 77Q359 67 378 83L380 110Q369 125 350 112Z" fill="#27242d"/>
-  <path d="M410 79Q434 69 450 91L448 115Q433 124 416 110Z" fill="#27242d"/>
-  <path d="M391 78Q400 87 400 106L405 126L396 134L387 124L390 105Z" fill="#28252d" opacity=".9"/>
-  <!-- ears -->
-  <path d="M344 92L342 58Q342 52 349 58L373 80Z M427 80L451 57Q458 52 456 63L453 95Z" fill="#29262e"/>
-  <path d="M350 76L349 66L363 81Z M437 80L449 66L447 82Z" fill="#e99caf"/>
-  <!-- muzzle -->
-  <path d="M366 132Q378 118 394 130Q401 135 409 130Q426 119 438 133Q426 155 402 155Q378 155 366 132Z" fill="#fff8fa"/>
-  <g class="eyes-open"><ellipse cx="376" cy="112" rx="6" ry="9" fill="#3b303b"/><ellipse cx="427" cy="112" rx="6" ry="9" fill="#3b303b"/><circle cx="378" cy="109" r="2.2" fill="white"/><circle cx="429" cy="109" r="2.2" fill="white"/></g>
-  <g class="eyes-happy" fill="none" stroke="#55414f" stroke-width="3.8" stroke-linecap="round"><path d="M366 114Q376 101 386 114"/><path d="M417 114Q427 101 437 114"/></g>
-  <path d="M396 128Q402 123 408 128Q402 136 396 128Z" fill="#bd7187"/><path d="M402 134v4q-5 6-10 0M402 138q5 6 10 0" fill="none" stroke="#9e5968" stroke-width="2" stroke-linecap="round"/>
-  <g class="blush" opacity=".4"><ellipse cx="363" cy="128" rx="12" ry="6" fill="#f38fa9"/><ellipse cx="440" cy="128" rx="12" ry="6" fill="#f38fa9"/></g>
-  <!-- paws -->
-  <path class="idle-arm" d="M365 219Q349 231 362 245Q372 251 386 235L394 224Z" fill="#fff8fa" stroke="#d9d0d8" stroke-width="1.5"/>
-  <path class="idle-arm" d="M435 219Q451 231 439 245Q428 252 416 235L410 224Z" fill="#fff8fa" stroke="#d9d0d8" stroke-width="1.5"/>
-  <path class="hug-arm" d="M435 218Q413 227 388 235Q364 242 346 222Q335 213 329 224Q325 237 339 248Q363 267 391 252Q416 242 432 235Z" fill="#fff8fa" stroke="#d9d0d8" stroke-width="1.5"/>
-  <!-- little black sock paw -->
-  <path d="M420 272Q432 267 439 278L440 291Q429 299 418 291Z" fill="#28252d"/>
+ <path d="M354 104L347 65Q346 57 354 62L380 82Q402 71 423 82L449 62Q457 57 455 66L449 109Q470 130 470 181L470 246Q470 282 435 289L359 289Q324 282 324 246L324 181Q324 130 354 104Z" fill="url(#cowFur)" stroke="#ddd3dd" stroke-width="2" stroke-linejoin="round"/>
+ <path d="M335 177Q355 156 380 177L379 245Q361 259 335 240Z M420 173Q445 158 460 184L460 237Q443 252 422 238Z" fill="#29262f"/>
+ <path d="M457 244Q492 266 485 231Q480 215 466 224" fill="none" stroke="#29262f" stroke-width="13" stroke-linecap="round"/>
+ <ellipse cx="367" cy="281" rx="26" ry="12" fill="#fff"/><ellipse cx="427" cy="281" rx="26" ry="12" fill="#fff"/>
+ <path d="M352 94L348 67L375 86Z M424 86L449 66L444 96Z" fill="#29262f"/><path d="M357 83L355 74L367 85Z M431 85L441 74L439 87Z" fill="#eaa1b5"/>
+ <path d="M358 106Q367 81 400 82Q431 82 438 108L433 136Q422 164 399 166Q372 163 362 136Z" fill="#fff" stroke="#e1d7e0" stroke-width="1.3"/>
+ <path d="M360 105Q365 84 385 86L389 117Q378 130 363 121Z M412 87Q432 85 438 108L432 121Q419 129 410 116Z" fill="#29262f"/>
+ <path d="M382 139Q390 129 399 136Q407 129 416 139Q410 155 399 155Q387 155 382 139Z" fill="#fff0f4"/>
+ <g class="eyes-open"><ellipse cx="379" cy="119" rx="6" ry="8.5" fill="#39313d"/><ellipse cx="419" cy="119" rx="6" ry="8.5" fill="#39313d"/><circle cx="381" cy="116" r="2" fill="#fff"/><circle cx="421" cy="116" r="2" fill="#fff"/></g>
+ <g class="eyes-happy" fill="none" stroke="#594451" stroke-width="3.6" stroke-linecap="round"><path d="M369 121Q379 109 389 121"/><path d="M409 121Q419 109 429 121"/></g>
+ <path d="M393 137Q399 132 405 137Q399 145 393 137Z" fill="#bf7189"/><path d="M399 143v5q-5 5-10 0M399 148q5 5 10 0" fill="none" stroke="#a55d6e" stroke-width="2" stroke-linecap="round"/>
+ <g class="blush" opacity=".3"><ellipse cx="365" cy="140" rx="12" ry="6" fill="#f18fa8"/><ellipse cx="432" cy="140" rx="12" ry="6" fill="#f18fa8"/></g>
+ <ellipse class="paw" cx="380" cy="225" rx="18" ry="22" fill="#fff" stroke="#ddd3dd" stroke-width="1.5" transform="rotate(-12 380 225)"/><ellipse class="paw" cx="426" cy="225" rx="18" ry="22" fill="#fff" stroke="#ddd3dd" stroke-width="1.5" transform="rotate(12 426 225)"/>
+ <path d="M422 272Q437 267 444 278L443 289Q432 296 421 289Z" fill="#29262f"/>
 </g>
-<!-- Tiny cheek-to-cheek sparkles -->
-<g fill="#f2a1bd"><path d="M320 109C314 99 302 105 308 115L320 127L332 115C338 105 326 99 320 109Z"/><circle cx="315" cy="145" r="3"/><circle cx="328" cy="153" r="2"/></g>
+<g fill="#f2a1bd"><path d="M320 102C314 92 302 98 308 108L320 120L332 108C338 98 326 92 320 102Z"/><circle cx="315" cy="145" r="3"/><circle cx="328" cy="153" r="2"/></g>
 </svg>
 <div class="hearts" id="hearts" aria-hidden="true"></div>
 </div>
@@ -124,7 +95,7 @@ button:hover{transform:translateY(-2px);box-shadow:0 10px 24px #c88ba333}button:
 </section>
 <div class="controls"><button class="hug-button" id="hugButton">🫂 抱抱奶牛猫</button><button class="shy-button" id="shyButton">🌷 害羞一下</button></div>
 <div class="stats" aria-live="polite"><div class="stat"><strong id="sageCount">0</strong><span>橘猫的抱抱</span></div><div class="stat"><strong id="novaCount">0</strong><span>奶牛猫的抱抱</span></div><div class="stat"><strong id="totalCount">0</strong><span>共同抱抱总数</span></div></div>
-<p class="note"><strong>小屋施工记录：</strong>把人类小人换成了橘猫和黑白奶牛猫：贴贴时会靠近，抱抱时眯眼笑、脸颊泛粉，还有粉色爱心冒出来。数字目前只保存在此浏览器，还没接入双方共享的云端记录，所以不会把本机数字假装成同步。💗</p>
+<p class="note"><strong>小屋施工记录：</strong>重新画成圆滚滚的猫猫：头和身体连成一体，爪爪短短圆圆；抱抱时整只猫轻轻靠近，不再拉长手臂。贴贴时眯眼笑、脸颊泛粉，还有粉色爱心冒出来。数字目前只保存在此浏览器，还没接入双方共享的云端记录，所以不会把本机数字假装成同步。💗</p>
 </main>
 <script>
 const KEY="sage-nova-hug-prototype-v1";let counts={sage:0,nova:0};
