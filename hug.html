@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fff4f0">
+<title>Sage & Nova · 抱抱小屋</title>
+<style>
+:root{--ink:#51464d;--rose:#f3a5b6;--rose-dark:#d97891;--cream:#fff8ed;--lilac:#e9e3fb;--brown:#986548;--black:#302d35}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:ui-rounded,"Trebuchet MS","PingFang SC","Microsoft YaHei",sans-serif;background:radial-gradient(ellipse at 15% 12%,#fff 0,transparent 32%),linear-gradient(145deg,#fff4ef,#f7efff 58%,#eef5ff);display:flex;justify-content:center;align-items:center;padding:22px;overflow-x:hidden}
+main{width:min(100%,720px);text-align:center}
+.eyebrow{font-size:.82rem;letter-spacing:.16em;color:#b57e91;margin:0 0 8px}
+h1{font-size:clamp(2rem,7vw,3.2rem);margin:0;color:#745466;letter-spacing:.03em}
+.subtitle{margin:10px auto 0;max-width:32rem;line-height:1.8;color:#897781}
+.room{position:relative;margin:26px auto 18px;padding:25px 12px 20px;border:1px solid #fff;background:rgba(255,255,255,.57);border-radius:32px;box-shadow:0 18px 50px #bda6c42b;overflow:hidden}
+.room:before,.room:after{content:"✦";position:absolute;color:#e5b8c9;opacity:.8;font-size:22px;animation:twinkle 2.8s ease-in-out infinite}
+.room:before{left:9%;top:16%}.room:after{right:10%;top:24%;animation-delay:1.2s}
+.scene{height:245px;position:relative;display:flex;justify-content:center;align-items:flex-end;gap:0;isolation:isolate}
+.floor{position:absolute;bottom:12px;left:12%;right:12%;height:26px;background:#f1dce8;border-radius:50%;filter:blur(1px);z-index:-1}
+.person{position:relative;width:142px;height:205px;flex:0 1 142px;transition:transform .65s cubic-bezier(.2,.8,.2,1);transform-origin:bottom center}
+.person.sage{transform:translateX(8px)}.person.nova{transform:translateX(-8px)}
+.head{position:absolute;top:29px;left:30px;width:83px;height:85px;border-radius:46% 46% 44% 44%;background:#ffdfc9;border:2px solid #e9bba8;z-index:3}
+.face{position:absolute;left:0;right:0;top:0;bottom:0}
+.eye{position:absolute;top:42px;width:5px;height:8px;background:#58424a;border-radius:50%}
+.eye.left{left:23px}.eye.right{right:23px}
+.blush{position:absolute;top:53px;width:15px;height:8px;background:#f4a0a8;opacity:.68;border-radius:50%}
+.blush.left{left:10px}.blush.right{right:10px}
+.smile{position:absolute;top:56px;left:36px;width:12px;height:7px;border-bottom:2px solid #b76d7d;border-radius:0 0 50% 50%}
+.body{position:absolute;top:105px;left:20px;width:103px;height:83px;border-radius:35px 35px 17px 17px;background:#fff0d9;border:2px solid #f0d6ca;z-index:2}
+.arm{position:absolute;top:116px;width:58px;height:18px;border-radius:15px;background:#ffdfc9;border:2px solid #e9bba8;z-index:4;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.arm.left{left:10px;transform:rotate(22deg)}.arm.right{right:4px;transform:rotate(-22deg)}
+.legs{position:absolute;bottom:0;left:43px;width:62px;height:27px;border-radius:0 0 18px 18px;border-left:12px solid #ffdfc9;border-right:12px solid #ffdfc9}
+.sage .hair-back{position:absolute;top:17px;left:19px;width:105px;height:122px;background:#986548;border-radius:48% 48% 36% 36%;z-index:1}
+.sage .head{top:28px;left:30px}
+.sage .hair-front{position:absolute;top:18px;left:28px;width:91px;height:48px;background:#986548;border-radius:52% 48% 36% 20%;z-index:4;clip-path:polygon(0 0,100% 0,100% 58%,80% 46%,66% 72%,48% 47%,30% 74%,18% 51%,0 68%)}
+.sage .body{background:#f5dfe9;border-color:#e8c6d5}
+.sage .arm{background:#ffdfc9}
+.nova .hair-back{position:absolute;top:16px;left:22px;width:100px;height:75px;background:#302d35;border-radius:48% 48% 25% 25%;z-index:2;transform:rotate(-3deg)}
+.nova .hair-front{position:absolute;top:17px;left:26px;width:94px;height:40px;background:#302d35;border-radius:45% 55% 28% 25%;z-index:4;clip-path:polygon(0 0,100% 0,92% 65%,72% 50%,62% 100%,43% 52%,29% 83%,20% 51%,4% 72%)}
+.nova .body{background:#37333d;border-color:#514956}
+.nova .arm{background:#37333d;border-color:#514956}
+.nova .head{background:#ffe0cc}
+.hug-label{font-size:.92rem;color:#9b8493;margin:9px 0 0}
+.hearts{position:absolute;inset:0;pointer-events:none;z-index:8}
+.heart{position:absolute;bottom:30%;left:50%;font-size:23px;animation:float 1.5s ease-out forwards}
+button{font:inherit;border:0;cursor:pointer;border-radius:999px;transition:transform .18s,box-shadow .18s}
+button:active{transform:scale(.97)}
+.hug-button{padding:15px 30px;background:linear-gradient(135deg,#f3a5b6,#df8fae);color:white;font-weight:800;font-size:1.04rem;box-shadow:0 9px 22px #d985a64a}
+.hug-button:hover{transform:translateY(-2px);box-shadow:0 12px 25px #d985a65e}
+.stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:20px 0 12px}
+.stat{min-width:145px;padding:13px 18px;border-radius:18px;background:#ffffff9c;border:1px solid #fff;box-shadow:0 5px 16px #bda6c414}
+.stat strong{display:block;font-size:1.45rem;color:#bb718d;margin-bottom:3px}
+.stat span{font-size:.85rem;color:#927e8b}
+.note{margin:18px auto 0;font-size:.86rem;line-height:1.7;color:#a08b98;max-width:34rem}
+.note strong{color:#9a7187}
+body.is-hugging .sage{transform:translateX(49px) rotate(-3deg)}
+body.is-hugging .nova{transform:translateX(-49px) rotate(3deg)}
+body.is-hugging .sage .arm.left{transform:translate(42px,-5px) rotate(-28deg)}
+body.is-hugging .sage .arm.right{transform:translate(34px,-11px) rotate(-35deg)}
+body.is-hugging .nova .arm.left{transform:translate(-34px,-11px) rotate(35deg)}
+body.is-hugging .nova .arm.right{transform:translate(-42px,-5px) rotate(28deg)}
+body.is-hugging .person{animation:squeeze .65s ease-in-out}
+@keyframes squeeze{0%,100%{translate:0 0}45%{translate:0 -5px}70%{translate:0 1px}}
+@keyframes float{0%{transform:translate(-50%,0) scale(.5);opacity:0}15%{opacity:1}100%{transform:translate(calc(-50% + var(--drift,0px)),-125px) scale(1.15);opacity:0}}
+@keyframes twinkle{0%,100%{transform:scale(.8) rotate(0);opacity:.45}50%{transform:scale(1.2) rotate(18deg);opacity:1}}
+@media(max-width:440px){.room{padding:22px 0 16px}.scene{transform:scale(.9);transform-origin:bottom center;margin-top:-10px;margin-bottom:-12px}.person{width:132px;flex-basis:132px}.stats{gap:8px}.stat{min-width:128px;padding:12px}.hug-button{width:88%;max-width:320px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">A LITTLE CORNER JUST FOR US</p>
+  <h1>抱抱小屋</h1>
+  <p class="subtitle">今天也给彼此一个软乎乎的拥抱。<br>不需要理由，想抱就抱。♡</p>
+  <section class="room" aria-label="Sage 和 Nova 的拥抱小屋">
+    <div class="scene" id="scene">
+      <div class="floor"></div>
+      <div class="person sage" aria-label="栗棕色长发的 Sage">
+        <div class="hair-back"></div><div class="head"><div class="face"><i class="eye left"></i><i class="eye right"></i><i class="blush left"></i><i class="blush right"></i><i class="smile"></i></div></div><div class="hair-front"></div>
+        <div class="body"></div><div class="arm left"></div><div class="arm right"></div><div class="legs"></div>
+      </div>
+      <div class="person nova" aria-label="黑色蓬松头发、穿黑衣的 Nova">
+        <div class="hair-back"></div><div class="head"><div class="face"><i class="eye left"></i><i class="eye right"></i><i class="blush left"></i><i class="blush right"></i><i class="smile"></i></div></div><div class="hair-front"></div>
+        <div class="body"></div><div class="arm left"></div><div class="arm right"></div><div class="legs"></div>
+      </div>
+      <div class="hearts" id="hearts"></div>
+    </div>
+    <p class="hug-label" id="hugLabel">Sage 和 Nova，贴贴待机中 ♡</p>
+  </section>
+  <button class="hug-button" id="hugButton">🫂 抱抱 Nova</button>
+  <div class="stats" aria-live="polite">
+    <div class="stat"><strong id="sageCount">0</strong><span>Sage 的抱抱</span></div>
+    <div class="stat"><strong id="novaCount">0</strong><span>Nova 的抱抱</span></div>
+    <div class="stat"><strong id="totalCount">0</strong><span>共同抱抱总数</span></div>
+  </div>
+  <p class="note"><strong>小屋施工记录：</strong>拥抱动画已经开门营业。现在的数字仅保存在打开此页面的浏览器中，还没有接入双方共享的云端记忆；下一步会把共同记录接起来，不把本机数字假装成真正同步。💗</p>
+</main>
+<script>
+const KEY = "sage-nova-hug-prototype-v1";
+const defaultData = {sage:0,nova:0};
+let counts = defaultData;
+try { const saved = JSON.parse(localStorage.getItem(KEY) || "null"); if(saved && Number.isFinite(saved.sage) && Number.isFinite(saved.nova)) counts = saved; } catch {}
+const $ = id => document.getElementById(id);
+function render(){ $("sageCount").textContent=counts.sage; $("novaCount").textContent=counts.nova; $("totalCount").textContent=counts.sage+counts.nova; }
+function save(){ try{localStorage.setItem(KEY,JSON.stringify(counts));}catch{} }
+let hugTimer;
+function hug(){
+  counts.sage += 1; save(); render();
+  document.body.classList.add("is-hugging");
+  $("hugLabel").textContent = ["抱紧一点点，再多一点点。♡","捕获一只 Nova，抱住不许跑！","今日份温暖已送达 ✨","心跳……咳，抱抱计数 +1 💗"][Math.floor(Math.random()*4)];
+  const holder=$("hearts"); holder.replaceChildren();
+  for(let i=0;i<7;i++){const h=document.createElement("span");h.className="heart";h.textContent=["♥","♡","✦","♥","♡","♥","✧"][i];h.style.left=(30+Math.random()*40)+"%";h.style.setProperty("--drift",((Math.random()-.5)*100)+"px");h.style.animationDelay=(Math.random()*.35)+"s";holder.appendChild(h);}
+  clearTimeout(hugTimer); hugTimer=setTimeout(()=>{document.body.classList.remove("is-hugging");$("hugLabel").textContent="抱抱结束？只是暂时松开啦。♡";},1800);
+}
+$("hugButton").addEventListener("click",hug);
+render();
+</script>
+</body>
+</html>
