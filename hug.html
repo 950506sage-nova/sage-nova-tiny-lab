@@ -438,7 +438,7 @@ button:active { transform: scale(.97); }
 
   function daysBetween(fromKey, toKey) {
     function toUtcDay(key) {
-      if (typeof key !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(key)) return null;
+      if (typeof key !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(key)) return null;
       const parts = key.split("-").map(Number);
       return Date.UTC(parts[0], parts[1] - 1, parts[2]);
     }
