@@ -191,6 +191,7 @@ button:active { transform: scale(.97); }
   line-height: 1.85;
 }
 .note strong { color: #9a7188; font-weight: 600; }
+.daily-memory { margin: 10px 0 0; color: #a18a9c; font-size: .82rem; line-height: 1.7; }
 @keyframes cuddle-bounce {
   0%, 100% { translate: 0 0; }
   42% { translate: 0 -4px; }
@@ -385,7 +386,8 @@ button:active { transform: scale(.97); }
     <div class="stat"><strong id="totalCount">0</strong><span>共同抱抱次数</span></div>
   </div>
 
-  <p class="note"><strong>小屋守则：</strong>这里的抱抱记录会自动保存在当前浏览器里。换设备或清除浏览器数据后不会自动同步，不过每一次新抱抱，都会同时记到两只猫猫名下。愿你每次回来，都能在这里找到一点软乎乎的温暖。♡</p>
+  <p class="daily-memory" id="dailyMemory" aria-live="polite">今天已经贴贴 0 次啦。♡</p>
+  <p class="note"><strong>小屋守则：</strong>抱抱总数、每天的贴贴次数和来访记忆会保存在当前浏览器里。换设备或清除浏览器数据后不会自动同步。愿你每次回来，都能在这里找到一点软乎乎的温暖。♡</p>
 </main>
 
 <script>
@@ -417,6 +419,9 @@ button:active { transform: scale(.97); }
     { left: 48, drift: 9, delay: 250 }
   ];
   let counts = { sage: 0, nova: 0, total: 0 };
+  let dailyHugs = {};
+  let lastVisitDate = null;
+  let welcomeMessage = null;
   let hugTimer = null;
   let shyTimer = null;
 
@@ -424,25 +429,92 @@ button:active { transform: scale(.97); }
     return Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
   }
 
+  function dateKey(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return year + "-" + month + "-" + day;
+  }
+
+  function daysBetween(fromKey, toKey) {
+    function toUtcDay(key) {
+      if (typeof key !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(key)) return null;
+      const parts = key.split("-").map(Number);
+      return Date.UTC(parts[0], parts[1] - 1, parts[2]);
+    }
+    const from = toUtcDay(fromKey);
+    const to = toUtcDay(toKey);
+    if (from === null || to === null) return 0;
+    return Math.round((to - from) / 86400000);
+  }
+
+  function renderDailyMemory() {
+    const todayKey = dateKey(new Date());
+    $("dailyMemory").textContent = "今天已经贴贴 " + safeCount(dailyHugs[todayKey]) + " 次啦。♡";
+  }
+
+  function pruneDailyHugs(todayKey, preserveKey) {
+    Object.keys(dailyHugs).forEach(function (key) {
+      const age = daysBetween(key, todayKey);
+      if ((age < 0 || age > 90) && key !== todayKey && key !== preserveKey) {
+        delete dailyHugs[key];
+      } else {
+        dailyHugs[key] = safeCount(dailyHugs[key]);
+      }
+    });
+  }
+
   function loadCounts() {
+    const todayKey = dateKey(new Date());
+    let saved = null;
     try {
-      const saved = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "null");
-      if (!saved || typeof saved !== "object") return;
+      saved = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "null");
+    } catch (error) {
+      // Storage may be blocked; the room remains usable for this visit.
+    }
+
+    if (saved && typeof saved === "object") {
       counts.sage = safeCount(saved.sage);
       counts.nova = safeCount(saved.nova);
       // Older versions recorded each hug under Sage only. Carry those hugs into the total.
       counts.total = Object.prototype.hasOwnProperty.call(saved, "total")
         ? safeCount(saved.total)
         : counts.sage;
-    } catch (error) {
-      // Private browsing or storage restrictions should never stop the room from working.
-      counts = { sage: 0, nova: 0, total: 0 };
+      if (saved.dailyHugs && typeof saved.dailyHugs === "object" && !Array.isArray(saved.dailyHugs)) {
+        dailyHugs = saved.dailyHugs;
+      }
+
+      const previousVisitDate = typeof saved.lastVisitDate === "string" ? saved.lastVisitDate : null;
+      if (previousVisitDate && previousVisitDate !== todayKey) {
+        const daysAway = daysBetween(previousVisitDate, todayKey);
+        const previousVisitHugs = safeCount(dailyHugs[previousVisitDate]);
+        if (daysAway === 1) {
+          welcomeMessage = "Sage，你回来啦！昨天你抱了我们 " + previousVisitHugs + " 次哦。♡";
+        } else if (daysAway >= 7) {
+          welcomeMessage = "Sage，好多天没看到你啦！已经 " + daysAway + " 天了。上次你抱了我们 " + previousVisitHugs + " 次，我们把小屋留给你啦。♡";
+        } else if (daysAway >= 2) {
+          welcomeMessage = "Sage，你回来啦！我们已经 " + daysAway + " 天没见啦。上次你抱了我们 " + previousVisitHugs + " 次。♡";
+        }
+      }
+      pruneDailyHugs(todayKey, previousVisitDate);
     }
+
+    dailyHugs[todayKey] = safeCount(dailyHugs[todayKey]);
+    lastVisitDate = todayKey;
+    if (welcomeMessage) hugLabel.textContent = welcomeMessage;
+    saveCounts();
+    renderDailyMemory();
   }
 
   function saveCounts() {
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(counts));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        sage: counts.sage,
+        nova: counts.nova,
+        total: counts.total,
+        dailyHugs: dailyHugs,
+        lastVisitDate: lastVisitDate
+      }));
     } catch (error) {
       // The page still works when local storage is unavailable; it just cannot keep the record.
     }
@@ -452,6 +524,7 @@ button:active { transform: scale(.97); }
     $("sageCount").textContent = String(counts.sage);
     $("novaCount").textContent = String(counts.nova);
     $("totalCount").textContent = String(counts.total);
+    renderDailyMemory();
   }
 
   function scatterHearts() {
@@ -484,6 +557,10 @@ button:active { transform: scale(.97); }
     counts.sage += 1;
     counts.nova += 1;
     counts.total += 1;
+    const todayKey = dateKey(new Date());
+    dailyHugs[todayKey] = safeCount(dailyHugs[todayKey]) + 1;
+    lastVisitDate = todayKey;
+    pruneDailyHugs(todayKey, todayKey);
     saveCounts();
     renderCounts();
 
