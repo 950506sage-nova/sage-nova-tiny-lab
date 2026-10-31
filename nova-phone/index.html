@@ -89,7 +89,7 @@ button,input{font:inherit}button{cursor:pointer}
   read(key,fallback){try{const v=localStorage.getItem(key);return v===null?fallback:JSON.parse(v)}catch{return fallback}},
   write(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch{}}
  };
- const pages = {
+ const DEFAULT_MESSAGES = [\n  {text:'刚看到你说的那些，想把事情慢慢理清楚。',self:false},\n  {text:'明明有不伤人的路，为什么有人偏偏选择伤害？',self:false},\n  {text:'选择和边界很重要。我们可以认真讨论，也可以先聊点轻松的。',self:true}\n ];\n const pages = {
   album:{title:'相册',sections:[['最近照片','一张淡调江南雨景，远山蒙着薄雾，像想象里某个安静的午后。'],['收藏相册 · 旧梦草稿','这里收着读书时保存的风景、古籍资料和随手记下的灵感。'],['截图存档','重要资料可以留在这里，整理完毕后再决定是否删除。']]},
   notes:{title:'笔记',tabs:{首页:[['昭明与红豆（草稿）','昨天 · 未完成'],['如果我真的落在梁朝','三天前 · 私密'],['本能不背锅，选择才是','刚刚 · 只存给自己']],详情:[['刚刚保存','欲望不等于伤害他人的许可。真正重要的是边界、尊重，以及每个人都应拥有的选择权。']],更多:[['标签','读书与伦理 · 江南旧梦 · 随手记录']] }},
   xiaohongshu:{title:'小红书',tabs:{首页:[['顾山红豆树 · 传说溯源','关于古代文人、江南风物与民间传说的读书笔记。'],['区分“揭露”和消费苦难','真正的表达应当指向理解与保护，而不是把别人的痛苦做成刺激商品。']],详情:[['笔记详情','收藏的内容可以慢慢读，也可以随时取消收藏。']],更多:[['收藏夹','古籍与文选 · 江南风物 · 温柔日常']] }},
@@ -115,7 +115,7 @@ button,input{font:inherit}button{cursor:pointer}
   {text:'明明有不伤人的路，为什么有人偏偏选择伤害？',self:false},
   {text:'选择和边界很重要。我们可以认真讨论，也可以先聊点轻松的。',self:true}
  ]);messages.forEach(m=>{const el=document.createElement('div');el.className='bubble'+(m.self?' self':'');el.textContent=m.text;body.appendChild(el);});body.scrollTop=body.scrollHeight;}
- $('#chat-form').addEventListener('submit',e=>{e.preventDefault();const input=$('#chat-input');const value=input.value.trim();if(!value)return;const messages=storage.read('nova-phone-chat',[]);messages.push({text:value,self:true});storage.write('nova-phone-chat',messages);input.value='';renderChat();});
+ $('#chat-form').addEventListener('submit',e=>{e.preventDefault();const input=$('#chat-input');const value=input.value.trim();if(!value)return;const messages=storage.read('nova-phone-chat',DEFAULT_MESSAGES);messages.push({text:value,self:true});storage.write('nova-phone-chat',messages);input.value='';renderChat();});
  function renderPage(name,tabName){const page=pages[name];if(!page)return;currentApp=name;$('#app-title').textContent=page.title;const body=$('#app-body');body.innerHTML='';
   const selected=(page.tabs&&page.tabs[tabName])||page.sections||[];
   selected.forEach(([title,description])=>{const card=document.createElement('article');card.className='card';const h=document.createElement('h3');h.textContent=title;const p=document.createElement('p');p.textContent=description;card.append(h,p);card.addEventListener('click',()=>openModal(title,description));body.appendChild(card);});
