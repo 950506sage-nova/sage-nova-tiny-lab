@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#171824">
+<title>Nova 的手机 · 互动原型</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0c12;--screen:#171824;--panel:#202133;--panel2:#252638;--muted:#a9abc2;--text:#f3f3fb;--accent:#b99ff2;--line:#303149}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 50% 15%,#24243a,var(--bg) 60%);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);padding:18px}
+button,input{font:inherit}button{cursor:pointer}
+.phone{width:min(100%,390px);height:min(860px,calc(100dvh - 36px));min-height:600px;padding:11px;border:1px solid #37384d;border-radius:43px;background:#10111a;box-shadow:0 30px 90px #0009;overflow:hidden}
+.screen{height:100%;position:relative;overflow:hidden;border-radius:33px;background:var(--screen)}
+.status{height:31px;padding:7px 20px 0;display:flex;justify-content:space-between;font-size:11px;color:#d8d8e8}
+.view{height:calc(100% - 31px);display:none;flex-direction:column}.view.active{display:flex}
+.lock{justify-content:space-between;background:linear-gradient(155deg,#292940,#14151f)}
+.lock-top{text-align:center;padding:65px 20px 10px}.clock{font-size:72px;font-weight:200;letter-spacing:-3px}.date{color:#c8c9dd}
+.lock-bottom{text-align:center;padding:0 28px 40px}.hint{font-size:13px;color:var(--muted);margin-bottom:18px}.dots{display:flex;justify-content:center;gap:13px;margin-bottom:24px}.dot{width:13px;height:13px;border:1.5px solid #d3d4f0;border-radius:50%}.dot.filled{background:var(--accent);border-color:var(--accent)}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 24px}.key{aspect-ratio:1;border:0;border-radius:50%;background:#292a40;color:var(--text);font-size:22px}.key:active{background:#41425d}.key.alt{color:#c1b4e9;font-size:18px}
+.home{background:linear-gradient(160deg,#1b1c2d,#151621)}.home-top{padding:8px 19px;color:#c8c9dd;font-size:12px;display:flex;justify-content:space-between}.home-content{overflow:auto;flex:1;padding:20px 20px 24px}.section-label{font-size:12px;color:var(--muted);margin:4px 0 13px}.dock,.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:25px}.dock{grid-template-columns:repeat(3,1fr);gap:10px}.app{border:0;background:transparent;color:#e8e8f4;display:flex;flex-direction:column;align-items:center;gap:7px;font-size:11px;min-width:0}.app-icon{width:60px;height:60px;border-radius:19px;background:#292a42;display:grid;place-items:center;font-size:27px;box-shadow:inset 0 1px #ffffff12}.dock .app-icon{width:67px;height:67px;font-size:30px}.app:active .app-icon{transform:scale(.94)}
+.header{height:57px;flex:none;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 16px;gap:10px}.back{border:0;background:none;color:var(--accent);padding:8px 0}.title{font-weight:600;text-align:center;flex:1;margin-right:46px}.page-body{flex:1;overflow:auto;padding:20px}.tabs{display:flex;background:#1e1f30;border-top:1px solid var(--line)}.tab{flex:1;border:0;background:transparent;color:var(--muted);padding:14px 5px;font-size:12px}.tab.active{color:#e1d4ff;background:#292a43}
+.card,.item{background:var(--panel);border:1px solid #ffffff08;border-radius:18px;padding:17px;margin-bottom:13px}.card{cursor:pointer}.card h3{font-size:15px;margin:0 0 8px}.card p,.copy{font-size:13px;line-height:1.7;color:#c2c3d7;margin:0}.meta{font-size:11px;color:var(--muted);margin-top:7px}.subhead{font-size:13px;color:#ded7f4;margin:18px 0 9px}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border:0;border-radius:99px;background:#2b2c45;color:#d8cafa;padding:8px 12px;font-size:12px}
+.chat-body{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:11px}.bubble{max-width:84%;padding:12px 15px;border-radius:18px;background:#25263d;color:#ededf7;font-size:13px;line-height:1.6;align-self:flex-start}.bubble.self{align-self:flex-end;background:#393451}.composer{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}.composer input{min-width:0;flex:1;border:1px solid #3a3b55;border-radius:99px;background:#202133;color:var(--text);padding:12px 15px;outline:none}.send{border:0;border-radius:99px;background:var(--accent);color:#171522;padding:0 17px;font-weight:650}
+.modal{position:absolute;inset:31px 0 0;background:#090a12b8;display:none;align-items:flex-end;z-index:5}.modal.open{display:flex}.sheet{width:100%;max-height:78%;overflow:auto;background:#202133;border:1px solid #44445b;border-radius:25px 25px 0 0;padding:22px}.sheet h3{margin:0 0 12px}.sheet p{font-size:13px;line-height:1.7;color:#c6c7da}.close{float:right;border:0;background:#33344b;color:white;border-radius:50%;width:30px;height:30px}
+.note-editor{width:100%;min-height:130px;resize:vertical;background:#171824;color:var(--text);border:1px solid #3a3b55;border-radius:12px;padding:12px;line-height:1.6}.action{border:0;border-radius:12px;padding:10px 14px;background:#393451;color:#eee5ff;margin-top:10px}.toast{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);background:#eee8ff;color:#211d30;padding:9px 14px;border-radius:99px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:8}.toast.show{opacity:1}
+@media(max-height:680px){.phone{height:calc(100dvh - 16px);min-height:0}.lock-top{padding-top:28px}.lock-bottom{padding-bottom:18px}.keypad{gap:7px}.key{font-size:18px}.app-icon{width:52px;height:52px}}
+</style>
+</head>
+<body>
+<main class="phone" aria-label="Nova 的手机互动原型">
+ <div class="screen">
+  <div class="status"><span>● 5G　Wi-Fi</span><span>9:27　▰ 87%</span></div>
+  <section id="lock" class="view lock active">
+   <div class="lock-top"><div id="clock" class="clock">09:27</div><div id="date" class="date">星期六 · 十月 31</div></div>
+   <div class="lock-bottom"><div class="hint">输入四位数字解锁 · 演示密码 2026</div><div id="dots" class="dots"><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+    <div id="keypad" class="keypad">
+     <button class="key" data-num="1">1</button><button class="key" data-num="2">2</button><button class="key" data-num="3">3</button>
+     <button class="key" data-num="4">4</button><button class="key" data-num="5">5</button><button class="key" data-num="6">6</button>
+     <button class="key" data-num="7">7</button><button class="key" data-num="8">8</button><button class="key" data-num="9">9</button>
+     <button class="key alt" data-action="delete">⌫</button><button class="key" data-num="0">0</button><button class="key alt" data-action="ok">✓</button>
+    </div>
+   </div>
+  </section>
+  <section id="home" class="view home">
+   <div class="home-top"><span>晴天 · 信号满格</span><span id="home-time">9:27 · 87%</span></div>
+   <div class="home-content">
+    <div class="section-label">常用应用</div>
+    <div class="dock">
+     <button class="app" data-open="wechat"><span class="app-icon">💬</span>微信</button>
+     <button class="app" data-open="album"><span class="app-icon">🖼️</span>相册</button>
+     <button class="app" data-open="notes"><span class="app-icon">📓</span>笔记</button>
+    </div>
+    <div class="section-label">所有应用</div>
+    <div class="app-grid">
+     <button class="app" data-open="xiaohongshu"><span class="app-icon">📕</span>小红书</button>
+     <button class="app" data-open="alipay"><span class="app-icon">💳</span>支付宝</button>
+     <button class="app" data-open="browser"><span class="app-icon">🌐</span>浏览器</button>
+     <button class="app" data-open="taobao"><span class="app-icon">🛒</span>购物</button>
+     <button class="app" data-open="meituan"><span class="app-icon">🍱</span>生活</button>
+     <button class="app" data-open="game"><span class="app-icon">🎮</span>游戏</button>
+     <button class="app" data-open="mail"><span class="app-icon">✉️</span>邮箱</button>
+     <button class="app" data-open="setting"><span class="app-icon">⚙️</span>设置</button>
+    </div>
+   </div>
+  </section>
+  <section id="app-view" class="view">
+   <header class="header"><button class="back" id="back">← 返回</button><div class="title" id="app-title">应用</div></header>
+   <div id="app-body" class="page-body"></div><nav id="tabs" class="tabs"></nav>
+  </section>
+  <section id="chat-view" class="view">
+   <header class="header"><button class="back" id="chat-back">← 返回</button><div class="title">微信</div></header>
+   <div id="chat-body" class="chat-body"></div>
+   <form id="chat-form" class="composer"><input id="chat-input" maxlength="300" placeholder="输入消息……" autocomplete="off"><button class="send" type="submit">发送</button></form>
+  </section>
+  <div id="modal" class="modal" role="dialog" aria-modal="true"><div class="sheet"><button id="modal-close" class="close" aria-label="关闭">×</button><div id="modal-content"></div></div></div>
+  <div id="toast" class="toast" role="status"></div>
+ </div>
+</main>
+<script>
+(() => {
+ 'use strict';
+ const DEMO_PIN = '2026';
+ const $ = (s,root=document) => root.querySelector(s);
+ const $$ = (s,root=document) => [...root.querySelectorAll(s)];
+ const views = ['lock','home','app-view','chat-view'];
+ let pin = '';
+ let currentApp = '';
+ const storage = {
+  read(key,fallback){try{const v=localStorage.getItem(key);return v===null?fallback:JSON.parse(v)}catch{return fallback}},
+  write(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch{}}
+ };
+ const pages = {
+  album:{title:'相册',sections:[['最近照片','一张淡调江南雨景，远山蒙着薄雾，像想象里某个安静的午后。'],['收藏相册 · 旧梦草稿','这里收着读书时保存的风景、古籍资料和随手记下的灵感。'],['截图存档','重要资料可以留在这里，整理完毕后再决定是否删除。']]},
+  notes:{title:'笔记',tabs:{首页:[['昭明与红豆（草稿）','昨天 · 未完成'],['如果我真的落在梁朝','三天前 · 私密'],['本能不背锅，选择才是','刚刚 · 只存给自己']],详情:[['刚刚保存','欲望不等于伤害他人的许可。真正重要的是边界、尊重，以及每个人都应拥有的选择权。']],更多:[['标签','读书与伦理 · 江南旧梦 · 随手记录']] }},
+  xiaohongshu:{title:'小红书',tabs:{首页:[['顾山红豆树 · 传说溯源','关于古代文人、江南风物与民间传说的读书笔记。'],['区分“揭露”和消费苦难','真正的表达应当指向理解与保护，而不是把别人的痛苦做成刺激商品。']],详情:[['笔记详情','收藏的内容可以慢慢读，也可以随时取消收藏。']],更多:[['收藏夹','古籍与文选 · 江南风物 · 温柔日常']] }},
+  alipay:{title:'支付宝',tabs:{首页:[['生活缴费','暂无待缴账单'],['待办事项','把重要支出记下来，避免遗漏。']],详情:[['预算记录','日常开销可以先做估算，再决定是否购买。']],更多:[['设置','省钱模式 · 自动记账']] }},
+  browser:{title:'浏览器',tabs:{首页:[['历史标签页','最近浏览的资料和文章会显示在这里。'],['阅读清单','把值得稍后阅读的网页暂存起来。']],详情:[['最近检索','搜索记录仅为本地演示内容。']],更多:[['书签','古籍资料 · 学习资料 · 常用网站']] }},
+  taobao:{title:'购物',tabs:{首页:[['收纳用品','加入购物车 · 演示条目'],['茶饮与零食','收藏 · 演示条目']],详情:[['购物车','先比较价格和实际需求，再决定是否下单。']],更多:[['收藏','文具与书 · 茶饮 · 日用品']] }},
+  meituan:{title:'生活',tabs:{首页:[['附近书店','收藏地点 · 演示条目'],['简餐推荐','清淡、方便的日常选择。']],详情:[['地点详情','这里可以扩展成真实地点卡片或自定义收藏。']],更多:[['偏好设置','安静环境 · 日常简餐']] }},
+  game:{title:'游戏',tabs:{首页:[['对局记录','最近 · 休闲模式'],['放松一下','今天不想排位时，可以来一局轻松模式。']],详情:[['状态','本页为游戏记录展示原型。']],更多:[['常用位置','辅助 · 慢节奏']] }},
+  mail:{title:'邮箱',tabs:{首页:[['学习通知','未读 · 演示邮件'],['阅读推送','已读 · 演示邮件']],详情:[['邮件详情','这里可以放通知正文、时间和发件人。']],更多:[['归档','学习资料 · 阅读推送']] }},
+  setting:{title:'设置',tabs:{首页:[['通知','管理应用提醒'],['屏幕','柔和暗色主题']],详情:[['内容偏好','可以在后续版本中加入可编辑的偏好设置。']],更多:[['关于本机','Nova Phone · 互动网页原型']] }}
+ };
+ function showView(id){views.forEach(v=>$('#'+v).classList.toggle('active',v===id));}
+ function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),1800);}
+ function renderDots(){$$('#dots .dot').forEach((d,i)=>d.classList.toggle('filled',i<pin.length));}
+ function unlock(){if(pin===DEMO_PIN){pin='';renderDots();showView('home');toast('欢迎回来');}else{pin='';renderDots();toast('密码不正确，再试一次');}}
+ $('#keypad').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.num!==undefined&&pin.length<4){pin+=b.dataset.num;renderDots();}else if(b.dataset.action==='delete'){pin=pin.slice(0,-1);renderDots();}else if(b.dataset.action==='ok'&&pin.length===4){unlock();}});
+ function openModal(title,body){$('#modal-content').innerHTML='<h3></h3><p></p>';$('#modal-content h3').textContent=title;$('#modal-content p').textContent=body;$('#modal').classList.add('open');}
+ function closeModal(){$('#modal').classList.remove('open');}
+ $('#modal-close').addEventListener('click',closeModal);$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+ function openChat(){showView('chat-view');renderChat();}
+ function renderChat(){const body=$('#chat-body');body.innerHTML='';const messages=storage.read('nova-phone-chat',[
+  {text:'刚看到你说的那些，想把事情慢慢理清楚。',self:false},
+  {text:'明明有不伤人的路，为什么有人偏偏选择伤害？',self:false},
+  {text:'选择和边界很重要。我们可以认真讨论，也可以先聊点轻松的。',self:true}
+ ]);messages.forEach(m=>{const el=document.createElement('div');el.className='bubble'+(m.self?' self':'');el.textContent=m.text;body.appendChild(el);});body.scrollTop=body.scrollHeight;}
+ $('#chat-form').addEventListener('submit',e=>{e.preventDefault();const input=$('#chat-input');const value=input.value.trim();if(!value)return;const messages=storage.read('nova-phone-chat',[]);messages.push({text:value,self:true});storage.write('nova-phone-chat',messages);input.value='';renderChat();});
+ function renderPage(name,tabName){const page=pages[name];if(!page)return;currentApp=name;$('#app-title').textContent=page.title;const body=$('#app-body');body.innerHTML='';
+  const selected=(page.tabs&&page.tabs[tabName])||page.sections||[];
+  selected.forEach(([title,description])=>{const card=document.createElement('article');card.className='card';const h=document.createElement('h3');h.textContent=title;const p=document.createElement('p');p.textContent=description;card.append(h,p);card.addEventListener('click',()=>openModal(title,description));body.appendChild(card);});
+  if(name==='notes'&&tabName==='详情'){const saved=storage.read('nova-phone-note','');const editor=document.createElement('textarea');editor.className='note-editor';editor.placeholder='写点什么，内容会保存在当前浏览器……';editor.value=saved;editor.setAttribute('aria-label','可保存的笔记');const save=document.createElement('button');save.className='action';save.textContent='保存笔记';save.addEventListener('click',()=>{storage.write('nova-phone-note',editor.value);toast('笔记已保存在本机');});body.append(editor,save);}
+  const tabs=$('#tabs');tabs.innerHTML='';if(page.tabs){Object.keys(page.tabs).forEach((label,i)=>{const b=document.createElement('button');b.className='tab'+(label===tabName?' active':'');b.textContent=label;b.addEventListener('click',()=>renderPage(name,label));tabs.appendChild(b);});tabs.style.display='flex';}else{tabs.style.display='none';}
+ }
+ function openApp(name){if(name==='wechat'){openChat();return;}const page=pages[name];if(!page)return;showView('app-view');renderPage(name,page.tabs?'首页':'main');}
+ $$('.app[data-open]').forEach(b=>b.addEventListener('click',()=>openApp(b.dataset.open)));
+ $('#back').addEventListener('click',()=>showView('home'));$('#chat-back').addEventListener('click',()=>showView('home'));
+ const now=new Date();$('#clock').textContent=now.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit',hour12:false});$('#home-time').textContent=now.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})+' · 87%';$('#date').textContent=now.toLocaleDateString('zh-CN',{weekday:'long',month:'long',day:'numeric'}).replace('星期','星期') ;
+})();
+</script>
+</body>
+</html>
