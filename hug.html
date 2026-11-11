@@ -90,6 +90,22 @@ h1 {
   transform-origin: center bottom;
   transition: transform .62s cubic-bezier(.2,.8,.2,1);
 }
+.sage-character, .nova-character {
+  animation: soft-breathe 4.8s ease-in-out infinite;
+}
+.sage-character { animation-delay: -1.4s; }
+.nova-character { animation-delay: -3.2s; }
+.sage-tail, .nova-tail {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.sage-tail { animation: tail-idle 5.2s ease-in-out infinite; }
+.nova-tail { animation: tail-idle 6.3s ease-in-out -2.7s infinite; }
+.sage-eyes, .nova-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform .09s ease;
+}
 .idle-paws, .hug-arms, .eyes-happy, .mouth-happy, .blush {
   transition: opacity .24s ease;
 }
@@ -108,6 +124,14 @@ body.is-hugging .character { animation: cuddle-bounce .68s ease-in-out 1; }
 body.is-shy .sage-character { transform: rotate(-4deg) translateY(-3px); }
 body.is-shy .nova-character { transform: rotate(4deg) translateY(-3px); }
 body.is-shy .blush { opacity: 1; }
+body.is-nose-boop .sage-character { transform: translateX(9px) rotate(1deg); }
+body.is-nose-boop .nova-character { transform: translateX(-9px) rotate(-1deg); }
+body.is-stretching .sage-paws { transform: rotate(-10deg) translateY(-4px); }
+body.is-stretching .nova-paws { transform: rotate(10deg) translateY(-4px); }
+body.blink-sage .sage-eyes, body.blink-nova .nova-eyes,
+body.blink-both .sage-eyes, body.blink-both .nova-eyes { transform: scaleY(.08); }
+body.tail-wiggle .sage-tail { animation: tail-flick .28s ease-in-out 3; }
+body.tail-wiggle .nova-tail { animation: tail-flick .28s ease-in-out 3; }
 .hug-label {
   min-height: 1.6em;
   margin: 3px 8px 0;
@@ -192,6 +216,19 @@ button:active { transform: scale(.97); }
 }
 .note strong { color: #9a7188; font-weight: 600; }
 .daily-memory { margin: 10px 0 0; color: #a18a9c; font-size: .82rem; line-height: 1.7; }
+@keyframes soft-breathe {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -2.5px; }
+}
+@keyframes tail-idle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(5deg); }
+}
+@keyframes tail-flick {
+  0%, 100% { transform: rotate(0deg); }
+  35% { transform: rotate(-13deg); }
+  70% { transform: rotate(12deg); }
+}
 @keyframes cuddle-bounce {
   0%, 100% { translate: 0 0; }
   42% { translate: 0 -4px; }
@@ -244,7 +281,7 @@ button:active { transform: scale(.97); }
     <div class="scene" id="scene">
       <svg class="art-stage" viewBox="100 35 440 310" role="img" aria-labelledby="artTitle artDesc">
         <title id="artTitle">Sage 和 Nova 的猫猫抱抱</title>
-        <desc id="artDesc">一只橘色圆猫和一只黑白奶牛猫。点击抱抱按钮时，两只猫会靠近，用爪爪轻轻抱住对方。</desc>
+        <desc id="artDesc">一只橘色圆猫和一只黑白奶牛猫。它们会自己眨眼、轻轻摆尾、伸爪懒腰，偶尔靠近碰一碰鼻尖；点击抱抱按钮时会抱住对方。</desc>
         <defs>
           <linearGradient id="gingerFur" x1="0" y1="0" x2="1" y2="1">
             <stop stop-color="#ffda98"/><stop offset="1" stop-color="#efa052"/>
@@ -267,7 +304,7 @@ button:active { transform: scale(.97); }
         <!-- Sage: a single round ginger kitten -->
         <g class="character sage-character">
           <!-- Tail sits behind the body so it grows naturally from the rear. -->
-          <path d="M181 239C169 225 154 230 151 244C147 257 159 264 173 254" fill="none" stroke="#e99b4f" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="sage-tail" d="M181 239C169 225 154 230 151 244C147 257 159 264 173 254" fill="none" stroke="#e99b4f" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M219 165Q246 177 273 165Q293 166 307 185Q316 198 316 215L316 247Q316 282 282 293L210 293Q176 282 176 247L176 215Q177 194 190 180Q202 167 219 165Z"
             fill="url(#gingerFur)" stroke="#df944c" stroke-width="2.2" stroke-linejoin="round"/>
           <path d="M190 115Q186 108 187 99L187 82Q186 72 191 71Q197 70 203 81Q211 91 221 94Q246 78 272 94Q282 91 290 81Q297 70 303 71Q309 72 308 82L302 116Q317 134 312 151Q307 163 284 166Q266 174 246 174Q226 174 208 166Q185 163 180 151Q175 134 190 115Z"
@@ -285,7 +322,7 @@ button:active { transform: scale(.97); }
           <ellipse cx="278" cy="282" rx="27" ry="12" fill="#f8bf7a"/>
           <path d="M207 279Q210 282 208 286M216 280Q219 283 217 287M274 280Q271 283 273 287M283 279Q280 282 282 286" fill="none" stroke="#df944c" stroke-width="1.5" stroke-linecap="round" opacity=".82"/>
           <path d="M191 199l14 4M190 214l14 4M300 199l-14 4M301 214l-14 4" stroke="#d77f3b" stroke-width="3.5" stroke-linecap="round"/>
-          <g class="eyes-open">
+          <g class="eyes-open sage-eyes">
             <ellipse cx="220" cy="129" rx="6.2" ry="8.5" fill="#573c32"/>
             <ellipse cx="271" cy="129" rx="6.2" ry="8.5" fill="#573c32"/>
             <circle cx="222" cy="126" r="2.1" fill="#fff"/>
@@ -300,7 +337,7 @@ button:active { transform: scale(.97); }
             <ellipse cx="205" cy="149" rx="12" ry="6.5" fill="#f18fa8"/>
             <ellipse cx="286" cy="149" rx="12" ry="6.5" fill="#f18fa8"/>
           </g>
-          <g class="idle-paws">
+          <g class="idle-paws sage-paws">
             <ellipse cx="218" cy="228" rx="18" ry="22" fill="#ffd18b" stroke="#df944c" stroke-width="1.4" transform="rotate(-12 218 228)"/>
             <ellipse cx="278" cy="228" rx="18" ry="22" fill="#ffd18b" stroke="#df944c" stroke-width="1.4" transform="rotate(12 278 228)"/>
             <path d="M212 240l-1 5M220 242v5M273 242l-1 4M281 240l1 5" stroke="#df944c" stroke-width="1.5" stroke-linecap="round"/>
@@ -310,9 +347,11 @@ button:active { transform: scale(.97); }
         <!-- Nova: a round cow-pattern kitten -->
         <g class="character nova-character">
           <!-- White tail with a small black tip, tucked behind the body. -->
-          <path d="M468 238C481 234 491 243 490 254C489 264 479 267 470 257" fill="none" stroke="#dcd3df" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M468 238C481 234 491 243 490 254C489 264 479 267 470 257" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M490 248C493 254 490 259 486 261" fill="none" stroke="#292630" stroke-width="7" stroke-linecap="round"/>
+          <g class="nova-tail">
+            <path d="M468 238C481 234 491 243 490 254C489 264 479 267 470 257" fill="none" stroke="#dcd3df" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M468 238C481 234 491 243 490 254C489 264 479 267 470 257" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M490 248C493 254 490 259 486 261" fill="none" stroke="#292630" stroke-width="7" stroke-linecap="round"/>
+          </g>
           <path d="M358 163Q400 151 442 163Q469 183 470 215L470 247Q470 282 436 293L364 293Q330 282 330 247L330 215Q331 183 358 163Z"
             fill="url(#cowFur)" stroke="#dcd3df" stroke-width="2.2" stroke-linejoin="round"/>
           <path d="M354 115Q350 108 351 99L351 82Q350 72 355 71Q361 70 367 81Q375 91 382 94Q402 78 427 94Q437 91 445 81Q452 70 458 72Q464 73 461 83L454 116Q469 134 464 151Q459 164 438 168Q419 177 400 177Q381 177 362 168Q341 164 336 151Q331 134 354 115Z"
@@ -331,7 +370,7 @@ button:active { transform: scale(.97); }
           <ellipse cx="370" cy="282" rx="27" ry="12" fill="#fff"/>
           <ellipse cx="434" cy="282" rx="27" ry="12" fill="#fff"/>
           <path d="M363 279Q366 282 364 286M372 280Q375 283 373 287M430 280Q427 283 429 287M439 279Q436 282 438 286" fill="none" stroke="#cfc4d2" stroke-width="1.5" stroke-linecap="round" opacity=".9"/>
-          <g class="eyes-open">
+          <g class="eyes-open nova-eyes">
             <ellipse cx="381" cy="129" rx="6.2" ry="8.5" fill="#39313d"/>
             <ellipse cx="421" cy="129" rx="6.2" ry="8.5" fill="#39313d"/>
             <circle cx="383" cy="126" r="2.1" fill="#fff"/>
@@ -346,7 +385,7 @@ button:active { transform: scale(.97); }
             <ellipse cx="367" cy="149" rx="11" ry="6" fill="#f18fa8"/>
             <ellipse cx="433" cy="149" rx="11" ry="6" fill="#f18fa8"/>
           </g>
-          <g class="idle-paws">
+          <g class="idle-paws nova-paws">
             <ellipse cx="378" cy="228" rx="18" ry="22" fill="#fff" stroke="#dcd3df" stroke-width="1.5" transform="rotate(-12 378 228)"/>
             <ellipse cx="438" cy="228" rx="18" ry="22" fill="#fff" stroke="#dcd3df" stroke-width="1.5" transform="rotate(12 438 228)"/>
             <path d="M372 240l-1 5M380 242v5M433 242l-1 4M441 240l1 5" stroke="#cfc4d2" stroke-width="1.5" stroke-linecap="round"/>
@@ -424,6 +463,8 @@ button:active { transform: scale(.97); }
   let welcomeMessage = null;
   let hugTimer = null;
   let shyTimer = null;
+  let idleTimer = null;
+  let idleActionTimer = null;
 
   function safeCount(value) {
     return Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
@@ -540,11 +581,73 @@ button:active { transform: scale(.97); }
     });
   }
 
+  function clearIdlePose() {
+    body.classList.remove(
+      "blink-sage", "blink-nova", "blink-both",
+      "tail-wiggle", "is-nose-boop", "is-stretching"
+    );
+    if (idleActionTimer !== null) window.clearTimeout(idleActionTimer);
+    idleActionTimer = null;
+  }
+
   function clearPoseTimers() {
     if (hugTimer !== null) window.clearTimeout(hugTimer);
     if (shyTimer !== null) window.clearTimeout(shyTimer);
+    if (idleTimer !== null) window.clearTimeout(idleTimer);
     hugTimer = null;
     shyTimer = null;
+    idleTimer = null;
+    clearIdlePose();
+  }
+
+  function scheduleIdleAction(delay) {
+    if (idleTimer !== null) window.clearTimeout(idleTimer);
+    idleTimer = window.setTimeout(runIdleAction, delay === undefined ? 5200 + Math.random() * 4200 : delay);
+  }
+
+  function runIdleAction() {
+    idleTimer = null;
+    if (body.classList.contains("is-hugging") || body.classList.contains("is-shy")) {
+      scheduleIdleAction(1800);
+      return;
+    }
+
+    clearIdlePose();
+    const action = Math.floor(Math.random() * 6);
+    let duration = 850;
+
+    if (action === 0) {
+      body.classList.add("blink-sage");
+    } else if (action === 1) {
+      body.classList.add("blink-nova");
+    } else if (action === 2) {
+      body.classList.add("blink-both");
+    } else if (action === 3) {
+      body.classList.add("tail-wiggle");
+      hugLabel.textContent = "小橘猫和奶牛猫的尾巴，悄悄打起了拍子。";
+      duration = 1050;
+    } else if (action === 4) {
+      body.classList.add("is-nose-boop");
+      hugLabel.textContent = "两只猫碰了碰鼻尖，又挨在一起啦。♡";
+      duration = 1250;
+    } else {
+      body.classList.add("is-stretching");
+      hugLabel.textContent = "一只伸伸爪，另一只也跟着舒展身体。";
+      duration = 1150;
+    }
+
+    idleActionTimer = window.setTimeout(function () {
+      body.classList.remove(
+        "blink-sage", "blink-nova", "blink-both",
+        "tail-wiggle", "is-nose-boop", "is-stretching"
+      );
+      idleActionTimer = null;
+      if (!body.classList.contains("is-hugging") && !body.classList.contains("is-shy")) {
+        returnToIdle("橘猫和奶牛猫，贴贴待机中 ♡");
+      }
+    }, duration);
+
+    scheduleIdleAction(5600 + Math.random() * 4600);
   }
 
   function returnToIdle(message) {
@@ -573,6 +676,7 @@ button:active { transform: scale(.97); }
       body.classList.remove("is-hugging");
       hugLabel.textContent = "抱抱暂时结束啦，猫猫还在这里等下一次贴贴。♡";
       hugTimer = null;
+      scheduleIdleAction(1800);
     }, 1850);
   }
 
@@ -587,6 +691,7 @@ button:active { transform: scale(.97); }
       body.classList.remove("is-shy");
       hugLabel.textContent = "好啦，恢复贴贴待机中。♡";
       shyTimer = null;
+      scheduleIdleAction(1800);
     }, 1650);
   }
 
@@ -594,6 +699,7 @@ button:active { transform: scale(.97); }
   $("shyButton").addEventListener("click", shy);
   loadCounts();
   renderCounts();
+  scheduleIdleAction(1900);
 })();
 </script>
 </body>
