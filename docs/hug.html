@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fff5f8">
+<meta name="description" content="Sage 和 Nova 的小小抱抱小屋，两只圆滚滚的猫猫在这里贴贴。">
+<title>Sage & Nova · 抱抱小屋</title>
+<style>
+:root {
+  color-scheme: light;
+  --ink: #765b70;
+  --muted: #a18a9c;
+  --rose: #cf85a4;
+  --rose-deep: #bb6d91;
+  --glass: #fffdfbdc;
+  --line: #fff;
+}
+* { box-sizing: border-box; }
+html { min-height: 100%; background: #f9f0f7; }
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: max(22px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom));
+  display: grid;
+  place-items: center;
+  overflow-x: hidden;
+  color: var(--ink);
+  font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse at 10% 7%, #fff 0, transparent 33%),
+    radial-gradient(ellipse at 91% 82%, #e6e7ff 0, transparent 33%),
+    radial-gradient(ellipse at 52% 100%, #ffe8ec 0, transparent 35%),
+    linear-gradient(145deg, #fff9f0, #f8edf7 56%, #edf5ff);
+}
+button { font: inherit; }
+main { width: min(100%, 760px); text-align: center; }
+.eyebrow {
+  margin: 0 0 9px;
+  color: #b28ba2;
+  font-size: .7rem;
+  letter-spacing: .24em;
+}
+h1 {
+  margin: 0;
+  color: #795e75;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: clamp(2.25rem, 8vw, 3.3rem);
+  font-weight: 500;
+  letter-spacing: .08em;
+}
+.subtitle { margin: 11px auto 0; color: #9b8797; line-height: 1.9; }
+.room {
+  position: relative;
+  margin: 24px auto 17px;
+  padding: 10px 8px 15px;
+  overflow: hidden;
+  border: 1px solid #ffffffd9;
+  border-radius: 32px;
+  background: linear-gradient(145deg, #ffffffc9, #fff8fbab);
+  box-shadow: 0 23px 65px #9c7d961b, inset 0 1px #fff;
+}
+.room::before, .room::after {
+  position: absolute;
+  z-index: 1;
+  color: #d7adc5;
+  font-size: 25px;
+  content: "✧";
+  pointer-events: none;
+  animation: twinkle 3s ease-in-out infinite;
+}
+.room::before { top: 13%; left: 8%; }
+.room::after { top: 20%; right: 8%; animation-delay: 1.1s; }
+.scene {
+  position: relative;
+  display: grid;
+  height: 340px;
+  place-items: center;
+  isolation: isolate;
+}
+.art-stage {
+  display: block;
+  width: min(100%, 640px);
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 12px 14px #987d9216);
+}
+.character {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  transition: transform .62s cubic-bezier(.2,.8,.2,1);
+}
+.sage-character, .nova-character {
+  animation: soft-breathe 4.8s ease-in-out infinite;
+}
+.sage-character { animation-delay: -1.4s; }
+.nova-character { animation-delay: -3.2s; }
+.sage-tail, .nova-tail {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.sage-tail { animation: tail-idle 5.2s ease-in-out infinite; }
+.nova-tail { animation: tail-idle 6.3s ease-in-out -2.7s infinite; }
+.sage-eyes, .nova-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform .09s ease;
+}
+.idle-paws, .hug-arms, .eyes-happy, .mouth-happy, .blush {
+  transition: opacity .24s ease;
+}
+.idle-paws { opacity: 1; }
+.hug-arms { opacity: 0; }
+.eyes-happy, .mouth-happy { opacity: 0; }
+.blush { opacity: .45; }
+body.is-hugging .sage-character { transform: translateX(17px) rotate(2deg) scale(1.015); }
+body.is-hugging .nova-character { transform: translateX(-17px) rotate(-2deg) scale(1.015); }
+body.is-hugging .idle-paws { opacity: 0; }
+body.is-hugging .hug-arms { opacity: 1; }
+body.is-hugging .eyes-open, body.is-hugging .mouth-idle { opacity: 0; }
+body.is-hugging .eyes-happy, body.is-hugging .mouth-happy { opacity: 1; }
+body.is-hugging .blush { opacity: .95; }
+body.is-hugging .character { animation: cuddle-bounce .68s ease-in-out 1; }
+body.is-shy .sage-character { transform: rotate(-4deg) translateY(-3px); }
+body.is-shy .nova-character { transform: rotate(4deg) translateY(-3px); }
+body.is-shy .blush { opacity: 1; }
+body.is-nose-boop .sage-character { transform: translateX(9px) rotate(1deg); }
+body.is-nose-boop .nova-character { transform: translateX(-9px) rotate(-1deg); }
+body.is-stretching .sage-paws { transform: rotate(-10deg) translateY(-4px); }
+body.is-stretching .nova-paws { transform: rotate(10deg) translateY(-4px); }
+body.blink-sage .sage-eyes, body.blink-nova .nova-eyes,
+body.blink-both .sage-eyes, body.blink-both .nova-eyes { transform: scaleY(.08); }
+body.tail-wiggle .sage-tail { animation: tail-flick .28s ease-in-out 3; }
+body.tail-wiggle .nova-tail { animation: tail-flick .28s ease-in-out 3; }
+.hug-label {
+  min-height: 1.6em;
+  margin: 3px 8px 0;
+  color: #9b8495;
+  font-size: .92rem;
+  line-height: 1.7;
+}
+.hearts { position: absolute; z-index: 3; inset: 0; overflow: hidden; pointer-events: none; }
+.heart {
+  position: absolute;
+  bottom: 22%;
+  left: 50%;
+  color: #e79ab8;
+  font-size: 22px;
+  animation: heart-float 1.55s ease-out forwards;
+}
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+button {
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+button:focus-visible { outline: 3px solid #b9779a; outline-offset: 4px; }
+.hug-button {
+  min-height: 50px;
+  padding: 14px 27px;
+  color: #fff;
+  background: linear-gradient(135deg, #e9a9bf, #c781a5);
+  box-shadow: 0 9px 22px #d985a63e, inset 0 1px #ffffff60;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+.shy-button {
+  min-height: 48px;
+  padding: 13px 21px;
+  border: 1px solid #efdce7;
+  color: #a77992;
+  background: #ffffffc7;
+}
+@media (hover: hover) {
+  button:hover { transform: translateY(-2px); box-shadow: 0 11px 25px #c88ba333; }
+}
+button:active { transform: scale(.97); }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 19px 0 0;
+}
+.stat {
+  padding: 13px 8px 12px;
+  border: 1px solid #ffffffd9;
+  border-radius: 18px;
+  background: #ffffffa6;
+  box-shadow: 0 5px 16px #bda6c412;
+}
+.stat strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--rose-deep);
+  font-size: 1.42rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+.stat span { color: #927e8b; font-size: .82rem; line-height: 1.5; }
+.note {
+  max-width: 34rem;
+  margin: 16px auto 0;
+  color: #a08b99;
+  font-size: .8rem;
+  line-height: 1.85;
+}
+.note strong { color: #9a7188; font-weight: 600; }
+.daily-memory { margin: 10px 0 0; color: #a18a9c; font-size: .82rem; line-height: 1.7; }
+@keyframes soft-breathe {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -2.5px; }
+}
+@keyframes tail-idle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(5deg); }
+}
+@keyframes tail-flick {
+  0%, 100% { transform: rotate(0deg); }
+  35% { transform: rotate(-13deg); }
+  70% { transform: rotate(12deg); }
+}
+@keyframes cuddle-bounce {
+  0%, 100% { translate: 0 0; }
+  42% { translate: 0 -4px; }
+  70% { translate: 0 1px; }
+}
+@keyframes heart-float {
+  0% { transform: translate(-50%, 8px) scale(.5) rotate(-8deg); opacity: 0; }
+  18% { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--drift, 0px)), -128px) scale(1.08) rotate(10deg); opacity: 0; }
+}
+@keyframes twinkle {
+  0%, 100% { transform: scale(.8) rotate(0); opacity: .45; }
+  50% { transform: scale(1.2) rotate(18deg); opacity: 1; }
+}
+@media (max-width: 520px) {
+  body { padding-right: 12px; padding-left: 12px; }
+  .room { margin-top: 20px; padding: 7px 0 12px; border-radius: 26px; }
+  .scene { height: clamp(250px, 72vw, 300px); }
+  .art-stage { width: 100%; }
+  .stats { gap: 7px; }
+  .stat { padding: 11px 4px 10px; border-radius: 15px; }
+  .stat strong { font-size: 1.3rem; }
+  .stat span { font-size: .73rem; }
+  .hug-button { padding-right: 22px; padding-left: 22px; }
+  .shy-button { padding-right: 17px; padding-left: 17px; }
+}
+@media (max-width: 350px) {
+  .scene { height: 236px; }
+  .controls { gap: 8px; }
+  .hug-button, .shy-button { min-height: 46px; padding: 12px 15px; font-size: .9rem; }
+  .stat span { font-size: .68rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">A LITTLE CORNER JUST FOR US</p>
+  <h1>抱抱小屋</h1>
+  <p class="subtitle">今天也让两只猫猫贴贴抱抱。<br>软乎乎的幸福，不需要理由。♡</p>
+
+  <section class="room" aria-label="橘猫和黑白奶牛猫的拥抱小屋">
+    <div class="scene" id="scene">
+      <svg class="art-stage" viewBox="100 35 440 310" role="img" aria-labelledby="artTitle artDesc">
+        <title id="artTitle">Sage 和 Nova 的猫猫抱抱</title>
+        <desc id="artDesc">一只橘色圆猫和一只黑白奶牛猫。它们会自己眨眼、轻轻摆尾、伸爪懒腰，偶尔靠近碰一碰鼻尖；点击抱抱按钮时会抱住对方。</desc>
+        <defs>
+          <linearGradient id="gingerFur" x1="0" y1="0" x2="1" y2="1">
+            <stop stop-color="#ffda98"/><stop offset="1" stop-color="#efa052"/>
+          </linearGradient>
+          <linearGradient id="cowFur" x1="0" y1="0" x2="1" y2="1">
+            <stop stop-color="#fff"/><stop offset="1" stop-color="#eee8f0"/>
+          </linearGradient>
+          <filter id="softShadow" x="-30%" y="-30%" width="160%" height="180%">
+            <feGaussianBlur stdDeviation="4"/>
+          </filter>
+        </defs>
+
+        <ellipse cx="322" cy="302" rx="151" ry="10" fill="#bba1b8" opacity=".22" filter="url(#softShadow)"/>
+        <g fill="#e6a0bc" opacity=".9" aria-hidden="true">
+          <path d="M320 47l4 9 9 4-9 4-4 9-4-9-9-4 9-4z"/>
+          <path d="M132 137l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/>
+          <path d="M502 119l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/>
+        </g>
+
+        <!-- Sage: a single round ginger kitten -->
+        <g class="character sage-character">
+          <!-- Tail sits behind the body so it grows naturally from the rear. -->
+          <path class="sage-tail" d="M181 239C169 225 154 230 151 244C147 257 159 264 173 254" fill="none" stroke="#e99b4f" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M219 165Q246 177 273 165Q293 166 307 185Q316 198 316 215L316 247Q316 282 282 293L210 293Q176 282 176 247L176 215Q177 194 190 180Q202 167 219 165Z"
+            fill="url(#gingerFur)" stroke="#df944c" stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M190 115Q186 108 187 99L187 82Q186 72 191 71Q197 70 203 81Q211 91 221 94Q246 78 272 94Q282 91 290 81Q297 70 303 71Q309 72 308 82L302 116Q317 134 312 151Q307 163 284 166Q266 174 246 174Q226 174 208 166Q185 163 180 151Q175 134 190 115Z"
+            fill="url(#gingerFur)" stroke="#df944c" stroke-width="2.2" stroke-linejoin="round"/>
+          <!-- Curved gold collar following the narrowed neck; bell hangs clear of the chest. -->
+          <path d="M216 162Q246 176 276 162Q280 166 275 172Q246 186 217 172Q212 166 216 162Z" fill="#d99a42" stroke="#bf7d2b" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M220 164Q246 176 272 164" fill="none" stroke="#f8d58a" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="246" cy="183" r="6.5" fill="#f5c45e" stroke="#c78a2d" stroke-width="1.2"/>
+          <path d="M244 182L246 185L248 182" fill="none" stroke="#b77a24" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M193 100C189 92 185 80 189 74Q192 69 197 75Q209 86 217 92Q206 94 193 100Z M274 92Q283 85 295 75Q301 69 305 74C309 81 304 94 299 103Q287 95 274 92Z" fill="#e99f53"/>
+          <path d="M197 91Q192 83 193 78Q196 77 201 83Q205 87 210 91Q203 89 197 91Z M282 91Q289 84 295 78Q298 77 298 83Q297 88 294 94Q288 91 282 91Z" fill="#f4a9b9"/>
+          <path d="M236 99Q239 103 237 107M246 97Q249 101 247 105M256 99Q259 103 257 107" fill="none" stroke="#d9823f" stroke-width="2.5" stroke-linecap="round" opacity=".72"/>
+          <path d="M201 181Q246 203 290 181L296 253Q285 280 247 283Q209 280 198 253Z" fill="#fff0da" opacity=".94"/>
+          <ellipse cx="214" cy="282" rx="27" ry="12" fill="#f8bf7a"/>
+          <ellipse cx="278" cy="282" rx="27" ry="12" fill="#f8bf7a"/>
+          <path d="M207 279Q210 282 208 286M216 280Q219 283 217 287M274 280Q271 283 273 287M283 279Q280 282 282 286" fill="none" stroke="#df944c" stroke-width="1.5" stroke-linecap="round" opacity=".82"/>
+          <path d="M191 199l14 4M190 214l14 4M300 199l-14 4M301 214l-14 4" stroke="#d77f3b" stroke-width="3.5" stroke-linecap="round"/>
+          <g class="eyes-open sage-eyes">
+            <ellipse cx="220" cy="129" rx="6.2" ry="8.5" fill="#573c32"/>
+            <ellipse cx="271" cy="129" rx="6.2" ry="8.5" fill="#573c32"/>
+            <circle cx="222" cy="126" r="2.1" fill="#fff"/>
+            <circle cx="273" cy="126" r="2.1" fill="#fff"/>
+          </g>
+          <g class="eyes-happy" fill="none" stroke="#754b3c" stroke-width="3.7" stroke-linecap="round">
+            <path d="M210 131Q220 119 230 131"/><path d="M261 131Q271 119 281 131"/>
+          </g>
+          <path d="M240 145Q246 140 252 145Q246 153 240 145Z" fill="#bf7180"/>
+          <path d="M246 151v4q-5 5-10 0M246 155q5 5 10 0" fill="none" stroke="#a55d6e" stroke-width="2" stroke-linecap="round"/>
+          <g class="blush">
+            <ellipse cx="205" cy="149" rx="12" ry="6.5" fill="#f18fa8"/>
+            <ellipse cx="286" cy="149" rx="12" ry="6.5" fill="#f18fa8"/>
+          </g>
+          <g class="idle-paws sage-paws">
+            <ellipse cx="218" cy="228" rx="18" ry="22" fill="#ffd18b" stroke="#df944c" stroke-width="1.4" transform="rotate(-12 218 228)"/>
+            <ellipse cx="278" cy="228" rx="18" ry="22" fill="#ffd18b" stroke="#df944c" stroke-width="1.4" transform="rotate(12 278 228)"/>
+            <path d="M212 240l-1 5M220 242v5M273 242l-1 4M281 240l1 5" stroke="#df944c" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <!-- Nova: a round cow-pattern kitten -->
+        <g class="character nova-character">
+          <!-- White tail with a small black tip, tucked behind the body. -->
+          <g class="nova-tail">
+            <path d="M468 238C481 234 491 243 490 254C489 264 479 267 470 257" fill="none" stroke="#dcd3df" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M468 238C481 234 491 243 490 254C489 264 479 267 470 257" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M490 248C493 254 490 259 486 261" fill="none" stroke="#292630" stroke-width="7" stroke-linecap="round"/>
+          </g>
+          <path d="M358 163Q400 151 442 163Q469 183 470 215L470 247Q470 282 436 293L364 293Q330 282 330 247L330 215Q331 183 358 163Z"
+            fill="url(#cowFur)" stroke="#dcd3df" stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M354 115Q350 108 351 99L351 82Q350 72 355 71Q361 70 367 81Q375 91 382 94Q402 78 427 94Q437 91 445 81Q452 70 458 72Q464 73 461 83L454 116Q469 134 464 151Q459 164 438 168Q419 177 400 177Q381 177 362 168Q341 164 336 151Q331 134 354 115Z"
+            fill="url(#cowFur)" stroke="#dcd3df" stroke-width="2.2" stroke-linejoin="round"/>
+<!-- Pink collar sits around the narrowed neck, with the heart hanging in front. -->
+          <path d="M372 162Q400 176 428 162Q432 166 427 172Q400 186 373 172Q368 166 372 162Z" fill="#d98eaf" stroke="#bd7193" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M376 164Q400 176 424 164" fill="none" stroke="#f6c4d9" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M400 180C397 176 391 178 393 183L400 189L407 183C409 178 403 176 400 180Z" fill="#f4a4c4" stroke="#c96f9b" stroke-width="1.1" stroke-linejoin="round"/>
+          <!-- One small rounded shoulder patch on the lower-right side; keep the chest white. -->
+          <path d="M447 207Q454 202 459 210Q463 217 458 225Q453 231 447 226Q442 222 444 215Q444 210 447 207Z" fill="#292630"/>
+          <path d="M358 101C354 93 349 81 352 74Q354 68 360 73Q370 82 379 92Q367 94 358 101Z M428 92Q437 83 447 73Q453 68 457 74C460 81 455 94 452 102Q440 94 428 92Z" fill="#292630"/>
+          <path d="M362 91Q358 82 359 77Q361 77 367 83Q372 87 374 90Q368 89 362 91Z M435 90Q441 84 448 78Q450 78 448 85Q446 90 444 94Q440 91 435 90Z" fill="#eaa5bb"/>
+          <!-- Keep Nova’s face as one continuous white area; no inner mask-like outline. -->
+          <path d="M367 111Q367 96 380 94Q390 96 389 107Q385 116 373 117Z" fill="#292630"/>
+          <path d="M375 190Q400 201 426 190L435 253Q423 279 402 281Q379 279 368 253Z" fill="#fff" opacity=".9"/>
+          <ellipse cx="370" cy="282" rx="27" ry="12" fill="#fff"/>
+          <ellipse cx="434" cy="282" rx="27" ry="12" fill="#fff"/>
+          <path d="M363 279Q366 282 364 286M372 280Q375 283 373 287M430 280Q427 283 429 287M439 279Q436 282 438 286" fill="none" stroke="#cfc4d2" stroke-width="1.5" stroke-linecap="round" opacity=".9"/>
+          <g class="eyes-open nova-eyes">
+            <ellipse cx="381" cy="129" rx="6.2" ry="8.5" fill="#39313d"/>
+            <ellipse cx="421" cy="129" rx="6.2" ry="8.5" fill="#39313d"/>
+            <circle cx="383" cy="126" r="2.1" fill="#fff"/>
+            <circle cx="423" cy="126" r="2.1" fill="#fff"/>
+          </g>
+          <g class="eyes-happy" fill="none" stroke="#594451" stroke-width="3.7" stroke-linecap="round">
+            <path d="M371 131Q381 119 391 131"/><path d="M411 131Q421 119 431 131"/>
+          </g>
+          <path d="M394 145Q400 140 406 145Q400 153 394 145Z" fill="#bf7189"/>
+          <path d="M400 151v4q-5 5-10 0M400 155q5 5 10 0" fill="none" stroke="#a55d6e" stroke-width="2" stroke-linecap="round"/>
+          <g class="blush">
+            <ellipse cx="367" cy="149" rx="11" ry="6" fill="#f18fa8"/>
+            <ellipse cx="433" cy="149" rx="11" ry="6" fill="#f18fa8"/>
+          </g>
+          <g class="idle-paws nova-paws">
+            <ellipse cx="378" cy="228" rx="18" ry="22" fill="#fff" stroke="#dcd3df" stroke-width="1.5" transform="rotate(-12 378 228)"/>
+            <ellipse cx="438" cy="228" rx="18" ry="22" fill="#fff" stroke="#dcd3df" stroke-width="1.5" transform="rotate(12 438 228)"/>
+            <path d="M372 240l-1 5M380 242v5M433 242l-1 4M441 240l1 5" stroke="#cfc4d2" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+
+        </g>
+
+        <!-- These real foreground limbs appear only during a hug. -->
+        <g class="hug-arms" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M277 201C298 192 323 201 345 223" fill="none" stroke="#d88b43" stroke-width="22"/>
+          <path d="M277 201C298 192 323 201 345 223" fill="none" stroke="#f4bd72" stroke-width="17"/>
+          <ellipse cx="345" cy="224" rx="12" ry="10" fill="#ffd18b" stroke="#df944c" stroke-width="1.5" transform="rotate(28 345 224)"/>
+          <path d="M342 221l3 3M347 224l3 2" fill="none" stroke="#df944c" stroke-width="1.4"/>
+          <path d="M369 201C348 192 325 201 303 223" fill="none" stroke="#d9cfdd" stroke-width="22"/>
+          <path d="M369 201C348 192 325 201 303 223" fill="none" stroke="#fff" stroke-width="17"/>
+          <ellipse cx="303" cy="224" rx="12" ry="10" fill="#fff" stroke="#dcd3df" stroke-width="1.5" transform="rotate(-28 303 224)"/>
+          <path d="M300 222l3 2M305 224l3 2" fill="none" stroke="#cfc4d2" stroke-width="1.4"/>
+        </g>
+        <g fill="#f2a1bd" aria-hidden="true">
+          <path d="M320 106C314 96 302 102 308 112L320 124L332 112C338 102 326 96 320 106Z"/>
+          <circle cx="314" cy="151" r="2.8"/><circle cx="328" cy="157" r="2"/>
+        </g>
+      </svg>
+      <div class="hearts" id="hearts" aria-hidden="true"></div>
+    </div>
+    <p class="hug-label" id="hugLabel" role="status" aria-live="polite">橘猫和奶牛猫，贴贴待机中 ♡</p>
+  </section>
+
+  <div class="controls">
+    <button class="hug-button" id="hugButton" type="button">🫂 抱抱奶牛猫</button>
+    <button class="shy-button" id="shyButton" type="button">🌷 害羞一下</button>
+  </div>
+
+  <div class="stats" aria-label="抱抱记录">
+    <div class="stat"><strong id="sageCount">0</strong><span>橘猫参与抱抱</span></div>
+    <div class="stat"><strong id="novaCount">0</strong><span>奶牛猫参与抱抱</span></div>
+    <div class="stat"><strong id="totalCount">0</strong><span>共同抱抱次数</span></div>
+  </div>
+
+  <p class="daily-memory" id="dailyMemory" aria-live="polite">今天已经贴贴 0 次啦。♡</p>
+  <p class="note"><strong>小屋守则：</strong>抱抱总数、每天的贴贴次数和来访记忆会保存在当前浏览器里。换设备或清除浏览器数据后不会自动同步。愿你每次回来，都能在这里找到一点软乎乎的温暖。♡</p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  const STORAGE_KEY = "sage-nova-hug-prototype-v1";
+  const $ = function (id) { return document.getElementById(id); };
+  const hugLabel = $("hugLabel");
+  const heartsHolder = $("hearts");
+  const body = document.body;
+  const hugMessages = [
+    "两只猫猫贴成一团啦。♡",
+    "橘猫伸出爪爪，奶牛猫也抱紧一点。",
+    "今日份温暖已送达。✨",
+    "抱稳了，不许偷偷溜走。💗",
+    "碰一碰额头，再蹭一蹭脸颊。"
+  ];
+  const heartShapes = ["♥", "♡", "✦", "♥", "♡", "✧", "♥", "♡", "♥"];
+  const heartPositions = [
+    { left: 31, drift: -42, delay: 0 },
+    { left: 39, drift: 25, delay: 70 },
+    { left: 45, drift: -16, delay: 130 },
+    { left: 52, drift: 38, delay: 40 },
+    { left: 59, drift: -31, delay: 190 },
+    { left: 66, drift: 18, delay: 100 },
+    { left: 35, drift: 49, delay: 220 },
+    { left: 56, drift: -50, delay: 150 },
+    { left: 48, drift: 9, delay: 250 }
+  ];
+  let counts = { sage: 0, nova: 0, total: 0 };
+  let dailyHugs = {};
+  let lastVisitDate = null;
+  let welcomeMessage = null;
+  let hugTimer = null;
+  let shyTimer = null;
+  let idleTimer = null;
+  let idleActionTimer = null;
+
+  function safeCount(value) {
+    return Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
+  }
+
+  function dateKey(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return year + "-" + month + "-" + day;
+  }
+
+  function daysBetween(fromKey, toKey) {
+    function toUtcDay(key) {
+      if (typeof key !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(key)) return null;
+      const parts = key.split("-").map(Number);
+      return Date.UTC(parts[0], parts[1] - 1, parts[2]);
+    }
+    const from = toUtcDay(fromKey);
+    const to = toUtcDay(toKey);
+    if (from === null || to === null) return 0;
+    return Math.round((to - from) / 86400000);
+  }
+
+  function renderDailyMemory() {
+    const todayKey = dateKey(new Date());
+    $("dailyMemory").textContent = "今天已经贴贴 " + safeCount(dailyHugs[todayKey]) + " 次啦。♡";
+  }
+
+  function pruneDailyHugs(todayKey, preserveKey) {
+    Object.keys(dailyHugs).forEach(function (key) {
+      const age = daysBetween(key, todayKey);
+      if ((age < 0 || age > 90) && key !== todayKey && key !== preserveKey) {
+        delete dailyHugs[key];
+      } else {
+        dailyHugs[key] = safeCount(dailyHugs[key]);
+      }
+    });
+  }
+
+  function loadCounts() {
+    const todayKey = dateKey(new Date());
+    let saved = null;
+    try {
+      saved = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "null");
+    } catch (error) {
+      // Storage may be blocked; the room remains usable for this visit.
+    }
+
+    if (saved && typeof saved === "object") {
+      counts.sage = safeCount(saved.sage);
+      counts.nova = safeCount(saved.nova);
+      // Older versions recorded each hug under Sage only. Carry those hugs into the total.
+      counts.total = Object.prototype.hasOwnProperty.call(saved, "total")
+        ? safeCount(saved.total)
+        : counts.sage;
+      if (saved.dailyHugs && typeof saved.dailyHugs === "object" && !Array.isArray(saved.dailyHugs)) {
+        dailyHugs = saved.dailyHugs;
+      }
+
+      const previousVisitDate = typeof saved.lastVisitDate === "string" ? saved.lastVisitDate : null;
+      if (previousVisitDate && previousVisitDate !== todayKey) {
+        const daysAway = daysBetween(previousVisitDate, todayKey);
+        const previousVisitHugs = safeCount(dailyHugs[previousVisitDate]);
+        if (daysAway === 1) {
+          welcomeMessage = "Sage，你回来啦！昨天你抱了我们 " + previousVisitHugs + " 次哦。♡";
+        } else if (daysAway >= 7) {
+          welcomeMessage = "Sage，好多天没看到你啦！已经 " + daysAway + " 天了。上次你抱了我们 " + previousVisitHugs + " 次，我们把小屋留给你啦。♡";
+        } else if (daysAway >= 2) {
+          welcomeMessage = "Sage，你回来啦！我们已经 " + daysAway + " 天没见啦。上次你抱了我们 " + previousVisitHugs + " 次。♡";
+        }
+      }
+      pruneDailyHugs(todayKey, previousVisitDate);
+    }
+
+    dailyHugs[todayKey] = safeCount(dailyHugs[todayKey]);
+    lastVisitDate = todayKey;
+    if (welcomeMessage) hugLabel.textContent = welcomeMessage;
+    saveCounts();
+    renderDailyMemory();
+  }
+
+  function saveCounts() {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        sage: counts.sage,
+        nova: counts.nova,
+        total: counts.total,
+        dailyHugs: dailyHugs,
+        lastVisitDate: lastVisitDate
+      }));
+    } catch (error) {
+      // The page still works when local storage is unavailable; it just cannot keep the record.
+    }
+  }
+
+  function renderCounts() {
+    $("sageCount").textContent = String(counts.sage);
+    $("novaCount").textContent = String(counts.nova);
+    $("totalCount").textContent = String(counts.total);
+    renderDailyMemory();
+  }
+
+  function scatterHearts() {
+    heartsHolder.replaceChildren();
+    heartPositions.forEach(function (position, index) {
+      const heart = document.createElement("span");
+      heart.className = "heart";
+      heart.textContent = heartShapes[index];
+      heart.style.left = position.left + "%";
+      heart.style.setProperty("--drift", position.drift + "px");
+      heart.style.animationDelay = position.delay + "ms";
+      heartsHolder.appendChild(heart);
+    });
+  }
+
+  function clearIdlePose() {
+    body.classList.remove(
+      "blink-sage", "blink-nova", "blink-both",
+      "tail-wiggle", "is-nose-boop", "is-stretching"
+    );
+    if (idleActionTimer !== null) window.clearTimeout(idleActionTimer);
+    idleActionTimer = null;
+  }
+
+  function clearPoseTimers() {
+    if (hugTimer !== null) window.clearTimeout(hugTimer);
+    if (shyTimer !== null) window.clearTimeout(shyTimer);
+    if (idleTimer !== null) window.clearTimeout(idleTimer);
+    hugTimer = null;
+    shyTimer = null;
+    idleTimer = null;
+    clearIdlePose();
+  }
+
+  function scheduleIdleAction(delay) {
+    if (idleTimer !== null) window.clearTimeout(idleTimer);
+    idleTimer = window.setTimeout(runIdleAction, delay === undefined ? 5200 + Math.random() * 4200 : delay);
+  }
+
+  function runIdleAction() {
+    idleTimer = null;
+    if (body.classList.contains("is-hugging") || body.classList.contains("is-shy")) {
+      scheduleIdleAction(1800);
+      return;
+    }
+
+    clearIdlePose();
+    const action = Math.floor(Math.random() * 6);
+    let duration = 850;
+
+    if (action === 0) {
+      body.classList.add("blink-sage");
+    } else if (action === 1) {
+      body.classList.add("blink-nova");
+    } else if (action === 2) {
+      body.classList.add("blink-both");
+    } else if (action === 3) {
+      body.classList.add("tail-wiggle");
+      hugLabel.textContent = "小橘猫和奶牛猫的尾巴，悄悄打起了拍子。";
+      duration = 1050;
+    } else if (action === 4) {
+      body.classList.add("is-nose-boop");
+      hugLabel.textContent = "两只猫碰了碰鼻尖，又挨在一起啦。♡";
+      duration = 1250;
+    } else {
+      body.classList.add("is-stretching");
+      hugLabel.textContent = "一只伸伸爪，另一只也跟着舒展身体。";
+      duration = 1150;
+    }
+
+    idleActionTimer = window.setTimeout(function () {
+      body.classList.remove(
+        "blink-sage", "blink-nova", "blink-both",
+        "tail-wiggle", "is-nose-boop", "is-stretching"
+      );
+      idleActionTimer = null;
+      if (!body.classList.contains("is-hugging") && !body.classList.contains("is-shy")) {
+        returnToIdle("橘猫和奶牛猫，贴贴待机中 ♡");
+      }
+    }, duration);
+
+    scheduleIdleAction(5600 + Math.random() * 4600);
+  }
+
+  function returnToIdle(message) {
+    body.classList.remove("is-hugging", "is-shy");
+    hugLabel.textContent = message || "橘猫和奶牛猫，贴贴待机中 ♡";
+  }
+
+  function hug() {
+    clearPoseTimers();
+    counts.sage += 1;
+    counts.nova += 1;
+    counts.total += 1;
+    const todayKey = dateKey(new Date());
+    dailyHugs[todayKey] = safeCount(dailyHugs[todayKey]) + 1;
+    lastVisitDate = todayKey;
+    pruneDailyHugs(todayKey, todayKey);
+    saveCounts();
+    renderCounts();
+
+    body.classList.remove("is-shy");
+    body.classList.add("is-hugging");
+    hugLabel.textContent = hugMessages[(counts.total - 1) % hugMessages.length];
+    scatterHearts();
+
+    hugTimer = window.setTimeout(function () {
+      body.classList.remove("is-hugging");
+      hugLabel.textContent = "抱抱暂时结束啦，猫猫还在这里等下一次贴贴。♡";
+      hugTimer = null;
+      scheduleIdleAction(1800);
+    }, 1850);
+  }
+
+  function shy() {
+    clearPoseTimers();
+    body.classList.remove("is-hugging");
+    body.classList.add("is-shy");
+    hugLabel.textContent = "被你看得有一点不好意思……♡";
+    scatterHearts();
+
+    shyTimer = window.setTimeout(function () {
+      body.classList.remove("is-shy");
+      hugLabel.textContent = "好啦，恢复贴贴待机中。♡";
+      shyTimer = null;
+      scheduleIdleAction(1800);
+    }, 1650);
+  }
+
+  $("hugButton").addEventListener("click", hug);
+  $("shyButton").addEventListener("click", shy);
+  loadCounts();
+  renderCounts();
+  scheduleIdleAction(1900);
+})();
+</script>
+</body>
+</html>
